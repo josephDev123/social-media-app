@@ -24,11 +24,21 @@
 .list-group-item{
     display: flex;
     border: none ;
-    cursor: crosshair;
+    cursor: pointer;
     width: 10vw;
     border-radius: 15px;
 }
 
 .list-group-item:hover{
     background-color: #E7E7E8;
+}
+
+.tweet_button{
+    background-color: var(--twitter-color);
+    padding: 10px;
+    border-radius: 15px;
+    text-align: center;
+    border: none;
+    color: white;
+    width: 15vw;
 }

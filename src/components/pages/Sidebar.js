@@ -44,18 +44,8 @@ export default function Sidebar() {
               </label>
             </div>
         </div>
+        <br/>
+        <button className='tweet_button'>Tweet</button>
     </div>
   );
 }
-
-
-/* <ul>
-              <li>Home</li>
-              <li>Explore</li>
-              <li>Notification</li>
-              <li>Message</li>
-              <li>Bookmarks</li>
-              <li>List</li>
-              <li>Profile</li>
-              <li>More</li>
-            </ul> */
