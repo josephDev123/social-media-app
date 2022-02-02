@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/sidebar.css';
+import ProfileSnapShot from '../ProfileSnapShot'; 
 
 
 export default function Sidebar() {
@@ -46,6 +47,7 @@ export default function Sidebar() {
         </div>
         <br/>
         <button className='tweet_button'>Tweet</button>
+        <ProfileSnapShot/>
     </div>
   );
 }
