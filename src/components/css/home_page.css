@@ -1,0 +1,28 @@
+.home_container{
+    border-left: 1px solid #E7E7E8;
+    height: 100vh;
+    padding: 10px;
+    font-weight: bolder;
+}
+
+.image-upload>input {
+    display: none;
+    /* visibility: hidden; */
+  }
+
+.image-upload .img
+{
+    cursor: pointer;
+}
+
+.tweet_btn{
+    background-color: var(--twitter-color);
+    border-radius: 15px;
+    width: 60px;
+    height: 30px;
+    padding: 5px;
+    text-align: center;
+    color: #FFFFFF;
+    border: none;
+    font-size: 12px;
+}
