@@ -46,3 +46,7 @@
     color: white;
     width: 15vw;
 }
+
+.custom_link{
+    text-decoration: none;
+}

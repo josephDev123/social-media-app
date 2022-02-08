@@ -1,7 +1,9 @@
 import React from 'react';
 
 export default function Explore() {
-  return <div>
-      Comming soon ...
-  </div>;
+  return(
+     <div>
+      Expore page Comming soon ...
+    </div>
+  );
 }

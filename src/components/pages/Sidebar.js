@@ -1,24 +1,31 @@
 import React from 'react';
 import '../css/sidebar.css';
 import ProfileSnapShot from '../ProfileSnapShot'; 
+import CustomLink from '../router/Custom_link';
 
 
 export default function Sidebar() {
   return (
+  
     <div className='sidebar'>
         <div className='logo'>
           <i className="fab fa-twitter"></i>
         </div>
         <div className='navigation'>
             <div className="list-group">
+              
+          <CustomLink to='/' className='custom_link'>
               <label className="list-group-item">
-              <i class="fas fa-home"></i>
+                <i class="fas fa-home"></i>
                 Home
               </label>
+          </CustomLink>
+          <CustomLink to='/explore' className='custom_link'>
               <label className="list-group-item">
               <i class="fas fa-hashtag"></i>
                 Explore
               </label>
+          </CustomLink>
               <label className="list-group-item">
               <i class="far fa-bell"></i>
                 Notification

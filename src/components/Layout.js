@@ -1,8 +1,7 @@
 import React from 'react';
 import Sidebar from '../components/pages/Sidebar';
-// import Feed from './Feed';
 import TwitterEmbed from './TwitterEmbed';
-import Home from './pages/Home';
+import { Outlet } from 'react-router-dom';
 
 export default function Layout() {
   return(
@@ -13,7 +12,7 @@ export default function Layout() {
         </div>
 
         <div className='col-lg-4 col-sm-12 col-md-4'>
-          <Home/>
+          <Outlet/>
         </div>
 
         <div className='col-lg-4 col-sm-12 col-md-4'>

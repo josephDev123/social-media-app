@@ -3,13 +3,13 @@ import '../css/home_page.css';
 import Feed from '../Feed';
 
 
-export default function Home() {
+export function Home() {
   return (
     <div className='home_container'>
         <h6 className='pb-4'>Home</h6>
 
         <div className="input-group form-group-sm">
-          <span className="input-group-text"><img src='asset/avatar/avatar.jpg' className='img-fluid' width='30px' height='30px'></img></span>
+          <span className="input-group-text"><img src='asset/avatar/avatar.jpg' alt='' className='img-fluid' width='30px' height='30px'></img></span>
           <textarea className="form-control tweet_box" width='20px' height='20px' placeholder="What is Happening?"></textarea>
         </div>
          <br/>
