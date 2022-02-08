@@ -1,5 +1,6 @@
 .home_container{
     border-left: 1px solid #E7E7E8;
+    border-right: 1px solid #E7E7E8;
     height: 100vh;
     padding: 10px;
     font-weight: bolder;

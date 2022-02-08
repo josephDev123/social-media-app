@@ -40,7 +40,7 @@
 .tweet_button{
     background-color: var(--twitter-color);
     padding: 10px;
-    border-radius: 15px;
+    border-radius: 20px;
     text-align: center;
     border: none;
     color: white;
