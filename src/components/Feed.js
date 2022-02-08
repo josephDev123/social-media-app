@@ -4,7 +4,7 @@ import './css/feed.css';
 export default function Feed() {
   return (
     <div className='d-flex feed_wrapper'>
-      <div>
+      <div className='me-3'>
         <img src='asset/avatar/avatar.jpg' alt='' className='img-fluid' width='150px' height='150px' />
       </div>
        
