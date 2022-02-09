@@ -5,15 +5,14 @@ import '../css/login_reg.css';
 export default function Register() {
 
     const myStyle={
-        backgroundImage:`url(${process.env.PUBLIC_URL+ "/asset/login_reg_bg_img/register_bg_img.png"})`,
-               height:"100vh",
-               width:"100vh",
+                backgroundImage:`url(${process.env.PUBLIC_URL+ "/asset/login_reg_bg_img/register_bg_img.png"})`,
+                height:"100vh",
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 };
   return( 
-      <div style={myStyle}>
-        <div className=' d-flex flex-column justify-content-center align-items-center register_wrapper' >
+      <div className='container' style={myStyle}>
+        <div className='d-flex flex-column justify-content-center align-items-center register_wrapper' >
             <form className='' style={{ marginTop:'30vh' }}>
                 <div className="mb-3">
                 <h4>Register</h4>

@@ -4,17 +4,17 @@ import '../css/login_reg.css';
 
 export default function Login() {
     const myStyle={
-        backgroundImage:`url(${process.env.PUBLIC_URL+ "/asset/login_reg_bg_img/login_img_bg1.png"})`,
-       height:"100vh",
-       width:"100vh",
-        backgroundSize: 'contain',
+        backgroundImage:`url(${process.env.PUBLIC_URL+ "/asset/login_reg_bg_img/login_img_bg.png"})`,
+        height:"100vh",
+        backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         };
 
 
 
   return( 
-    <div className='container d-flex flex-column justify-content-center align-items-center login_wrapper' style={myStyle}>
+    <div className='container' style={myStyle}>
+    <div className='d-flex flex-column justify-content-center align-items-center login_wrapper'>
         <form  style={{ marginTop:'30vh' }}>
             <div className="mb-3">
             <h4>Login</h4>
@@ -31,6 +31,7 @@ export default function Login() {
                 <Link className='btn btn_bg-littleStyle' to='/register'>Register</Link>
             </div>
         </form>
+    </div>
     </div>
 );
 }
