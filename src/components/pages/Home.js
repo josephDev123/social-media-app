@@ -3,7 +3,7 @@ import '../css/home_page.css';
 import Feed from '../Feed';
 
 
-export function Home() {
+export default function Home() {
   return (
     <div className='home_container'>
         <h6 className='pb-4'>Home</h6>
