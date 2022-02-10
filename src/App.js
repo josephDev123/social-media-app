@@ -29,8 +29,8 @@ function App() {
               <Route path='message' element= {<Message/>}/>
               <Route path='home' element= {<Home/>}/>
             </Route>
-            <Route path='login' element= {<Login/>}/>
-            <Route path='register' element= {<Register/>}/>
+            <Route path='/login' element= {<Login/>}/>
+            <Route path='/register' element= {<Register/>}/>
           </Routes>
       </div>
     </BrowserRouter> 

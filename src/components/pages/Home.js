@@ -20,9 +20,9 @@ export default function Home() {
         </div>
     <hr/>
         <div className='d-flex justify-content-between mt-4'>
-          <div class="image-upload">
-            <label for="file-input">
-              <i class="fas fa-file-upload img"></i>
+          <div className="image-upload">
+            <label htmlFor="file-input">
+              <i className="fas fa-file-upload img"></i>
             </label>
 
             <input id="file-input" type="file" />

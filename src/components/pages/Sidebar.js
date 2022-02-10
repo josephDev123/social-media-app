@@ -16,56 +16,56 @@ export default function Sidebar() {
               
           <CustomLink to='/home' className='custom_link'>
               <label className="list-group-item">
-                <i class="fas fa-home"></i>
+                <i className="fas fa-home"></i>
                 Home
               </label>
           </CustomLink>
 
           <CustomLink to='/explore' className='custom_link'>
               <label className="list-group-item">
-              <i class="fas fa-hashtag"></i>
+              <i className="fas fa-hashtag"></i>
                 Explore
               </label>
           </CustomLink>
 
           <CustomLink to='/notification' className='custom_link'>
           <label className="list-group-item">
-              <i class="far fa-bell"></i>
+              <i className="far fa-bell"></i>
                 Notification
               </label>
           </CustomLink>
               
           <CustomLink to='/message' className='custom_link'>
               <label className="list-group-item">
-              <i class="far fa-envelope"></i>
+              <i className="far fa-envelope"></i>
                 Message
               </label>
             </CustomLink>
 
             <CustomLink to='/bookmark' className='custom_link'>
               <label className="list-group-item">
-              <i class="far fa-bookmark"></i>
+              <i className="far fa-bookmark"></i>
                 Bookmarks
               </label>
             </CustomLink>
 
             <CustomLink to='/list' className='custom_link'>
               <label className="list-group-item ">
-              <i class="far fa-list-alt"></i>
+              <i className="far fa-list-alt"></i>
                 List
               </label>
             </CustomLink>
               
             <CustomLink to='/profile' className='custom_link'>
               <label className="list-group-item">
-              <i class="fas fa-user"></i>
+              <i className="fas fa-user"></i>
                 Profile
               </label>
             </CustomLink>
 
             <CustomLink to='/more' className='custom_link'>
               <label className="list-group-item">
-              <i class="fas fa-plus"></i>
+              <i className="fas fa-plus"></i>
                 More
               </label>
             </CustomLink>
