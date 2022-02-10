@@ -22,11 +22,11 @@ export default function Login() {
                 <input type="email" className="form-control" id="loginInputEmail1" aria-describedby="emailHelp"/>
                 <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
             </div>
-            <div class="mb-3">
+            <div className="mb-3">
                 <label htmlFor="loginInputPassword1" className="form-label">Password</label>
                 <input type="password" className="form-control" id="loginInputPassword1"/>
             </div>
-            <div class="input-group mb-3">
+            <div className="input-group mb-3">
                 <button type="submit" className="btn btn-primary me-2">Login</button>
                 <Link className='btn btn_bg-littleStyle' to='/register'>Register</Link>
             </div>
