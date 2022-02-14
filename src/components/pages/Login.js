@@ -1,9 +1,11 @@
 import '../css/login_reg.css';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { context } from '../Context/context';
 import {signInWithEmailAndPassword, getAuth } from 'firebase/auth';
 import {app} from '../firebase/firebaseApp';
+
 
 export default function Login() {
     const myStyle={
@@ -12,6 +14,8 @@ export default function Login() {
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',
         };
+
+        const {login} = useContext(context);
         const redirect = useNavigate();
         const auth = getAuth();
         const [errors, setError] =useState('');
@@ -21,7 +25,12 @@ export default function Login() {
         function handleLoginSubmit(e){
             e.preventDefault();
             signInWithEmailAndPassword(auth, email, password).then(user_snapshot=>{
-                return user_snapshot.user? redirect('/'):redirect('/register');
+                 if(user_snapshot.user){
+                    login(user_snapshot.user)
+                    return  redirect('/')
+                }else{
+                    return  redirect('/register');
+                }
             }).catch(e=>setError(e.code))
         }
 

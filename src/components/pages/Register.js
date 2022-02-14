@@ -6,6 +6,7 @@ import {createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import {app} from '../firebase/firebaseApp';
 
 
+
 export default function Register() {
     const myStyle={
                 backgroundImage:`url(${process.env.PUBLIC_URL+ "/asset/login_reg_bg_img/register_bg_img.png"})`,
@@ -14,6 +15,7 @@ export default function Register() {
                 backgroundRepeat: 'no-repeat',
                 };
 
+                
                 const auth =getAuth(); 
                 const redirect = useNavigate();
                 const [errors, setError] =useState('');
