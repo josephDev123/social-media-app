@@ -5,6 +5,7 @@ import { useState, useContext } from 'react';
 import { context } from '../Context/context';
 import {signInWithEmailAndPassword, getAuth } from 'firebase/auth';
 import {app} from '../firebase/firebaseApp';
+import { type } from '../Type/reducerType';
 
 
 export default function Login() {
@@ -15,7 +16,8 @@ export default function Login() {
         backgroundRepeat: 'no-repeat',
         };
 
-        const {user} = useContext(context);
+        const {currentUserEmail, dispatch, state} = useContext(context);
+        const {SET_EMAIL} =  type;
         const redirect = useNavigate();
         const auth = getAuth();
         const [errors, setError] =useState('');
@@ -27,10 +29,11 @@ export default function Login() {
             signInWithEmailAndPassword(auth, email, password).then(user_snapshot=>{
                 
                  if(user_snapshot){
-                    user(user_snapshot.user.email)
+                    currentUserEmail(user_snapshot)
+                    dispatch({type:SET_EMAIL, email:user_snapshot.user.email});
                     return redirect('/');
                 }else{
-                    user(null);
+                    currentUserEmail(null);
                      return redirect('/register');
                     // return <Navigate to='/register' />;
                 }

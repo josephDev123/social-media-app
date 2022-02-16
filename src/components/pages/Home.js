@@ -1,9 +1,14 @@
 import React from 'react';
 import '../css/home_page.css';
 import Feed from '../Feed';
+import { useContext } from 'react';
+import { context } from '../Context/context';
 
 
 export default function Home() {
+  const mainState= useContext(context);
+  console.log(mainState);
+  
   return (
     <div className='home_container'>
         <h6 className='pb-4'>Home</h6>
