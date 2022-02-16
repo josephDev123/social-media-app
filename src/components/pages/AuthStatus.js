@@ -7,10 +7,8 @@ export default function AuthStatus({children}) {
     let {authValue} = useContext(context);
 
     if(!authValue){
-      return <div><Navigate to='/login' /></div>
+      return <Navigate to='/login' />
     }
+     return <div>{children}</div>
 
-    return (
-        <div>{children}</div>
-    )
 }

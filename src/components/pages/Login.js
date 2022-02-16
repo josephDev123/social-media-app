@@ -15,7 +15,7 @@ export default function Login() {
         backgroundRepeat: 'no-repeat',
         };
 
-        const {login} = useContext(context);
+        const {user} = useContext(context);
         const redirect = useNavigate();
         const auth = getAuth();
         const [errors, setError] =useState('');
@@ -25,11 +25,14 @@ export default function Login() {
         function handleLoginSubmit(e){
             e.preventDefault();
             signInWithEmailAndPassword(auth, email, password).then(user_snapshot=>{
-                 if(user_snapshot.user){
-                    login(user_snapshot.user)
-                    return  redirect('/')
+                
+                 if(user_snapshot){
+                    user(user_snapshot.user.email)
+                    return redirect('/');
                 }else{
-                    return  redirect('/register');
+                    user(null);
+                     return redirect('/register');
+                    // return <Navigate to='/register' />;
                 }
             }).catch(e=>setError(e.code))
         }
