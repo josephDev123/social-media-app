@@ -1,7 +1,7 @@
 import './App.css';
 import Layout from './components/Layout';
 import {BrowserRouter, Routes,Route} from "react-router-dom";
-import Home from './components/pages/Home';
+import {Home} from './components/pages/Home';
 import Explore from './components/pages/Explore';
 import Notification from './components/pages/Notification';
 import List from './components/pages/List';

@@ -1,9 +1,9 @@
 import { type } from "../Type/reducerType";
 export function reducer(state, action){
-    let {SET_EMAIL} = type;
+    let {SET_EMAIL_USERNAME} = type;
     switch (action.type) {
-        case SET_EMAIL:{ 
-            return   [...state, {userEmail:action.email}]
+        case SET_EMAIL_USERNAME:{ 
+            return   [...state, {userEmail:action.email, username:action.username}]
         }
     
         default:

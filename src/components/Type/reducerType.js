@@ -1,3 +1,3 @@
 export const type = {
-    SET_EMAIL:'set_email'
+    SET_EMAIL_USERNAME:'set_email_username'
 }

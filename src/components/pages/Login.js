@@ -17,7 +17,7 @@ export default function Login() {
         };
 
         const {currentUserEmail, dispatch, state} = useContext(context);
-        const {SET_EMAIL} =  type;
+        const {SET_EMAIL_USERNAME} =  type;
         const redirect = useNavigate();
         const auth = getAuth();
         const [errors, setError] =useState('');
@@ -30,7 +30,11 @@ export default function Login() {
                 
                  if(user_snapshot){
                     currentUserEmail(user_snapshot)
-                    dispatch({type:SET_EMAIL, email:user_snapshot.user.email});
+                    const username_extract = user_snapshot.user.email;
+                    const stringIndex = username_extract.indexOf('@');
+                    const username = username_extract.substring(0, stringIndex);
+
+                    dispatch({type:SET_EMAIL_USERNAME, email:user_snapshot.user.email, username:username});
                     return redirect('/');
                 }else{
                     currentUserEmail(null);

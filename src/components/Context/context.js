@@ -15,7 +15,7 @@ export function SetContext({children}){
     const initialState = [];
     const[state, dispatch] = useReducer(reducer, initialState);
 
-    const {SET_EMAIL} = type;
+    const {SET_EMAIL_USERNAME} = type;
 
     const [authValue, setAuthValue] = useState('');
     const [pending, setPending] = useState(true);
@@ -24,8 +24,11 @@ export function SetContext({children}){
         onAuthStateChanged(auth, (authSnapShot)=>{
             if(authSnapShot){
                 setAuthValue(authSnapShot);
+                const username_extract = authSnapShot.email;
+                const stringIndex = username_extract.indexOf('@');
+                const username = username_extract.substring(0, stringIndex);
                 setPending(false);
-                dispatch({type:SET_EMAIL, email:authSnapShot.email})
+                dispatch({type:SET_EMAIL_USERNAME, email:authSnapShot.email, username:username})
             }else{
                 setAuthValue(null);
                 setPending(false);
