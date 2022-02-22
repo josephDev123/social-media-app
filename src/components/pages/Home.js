@@ -1,28 +1,36 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import '../css/home_page.css';
 import Feed from '../Feed';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { context } from '../Context/context';
 import { app } from '../firebase/firebaseApp';
-import {getFirestore, setDoc, addDoc, serverTimestamp, doc, collection, onSnapshot} from 'firebase/firestore';
+import {getFirestore, addDoc, serverTimestamp, collection, onSnapshot} from 'firebase/firestore';
 
 
 export function Home() {
-
+  //firebase database
+  const db = getFirestore();
+  
   const uid =  useContext(context);
- console.log(uid);
+
   const uidEmail = uid.authValue.email;
 
+// states
   const [tweet,setTweet] = useState('');
   const [tweetUrl,setTweetUrl] = useState('');
+  const [extracTweet,getTweet] = useState([]);
+  const [loadingTweet,setLoadingTweet] = useState(true);
 
+  //adding tweet function
   function handleTweetSubmit(e){
     e.preventDefault();
-      const db = getFirestore();
    // document reference in firebase
       const docRef = collection(db, 'feeds');
       //add data to it
       addDoc(docRef, {
+        uid:uuidv4(),
+        username:uid.state[0].username,
         id:uidEmail,
         tweet:{feed:tweet, url:tweetUrl},
         time: serverTimestamp(),
@@ -30,7 +38,29 @@ export function Home() {
       setTweet(' ');
       setTweetUrl('');
   }
-  
+
+  //get feed collection from firebase
+useEffect(()=>{
+  const feedCollectionRef = collection(db, 'feeds');
+  onSnapshot(feedCollectionRef, (snapshot)=>{
+    const feeds = [];
+    if(snapshot){
+        snapshot.forEach(feed => {
+          setLoadingTweet(false);
+          feeds.push(feed.data());
+        })
+      }else{
+      setLoadingTweet(false);
+      feeds.push(' ');
+    };
+    
+    getTweet(feeds);
+  }, (error)=>{
+    console.log(error.code);
+  })
+
+}, [])
+
   return (
     <div className='home_container'>
         <h6 className='pb-4'>Home</h6>
@@ -64,7 +94,7 @@ export function Home() {
       </form>
       <hr/>
         {/* feed component */}
-        <Feed/>
+        <Feed loading={loadingTweet} loaded_feed={extracTweet} />
 
     </div>
   );

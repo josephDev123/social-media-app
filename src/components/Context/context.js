@@ -1,9 +1,9 @@
 import { createContext } from "react";
-import {useReducer, useState, useEffect, useContext} from 'react';
+import {useReducer, useState, useEffect} from 'react';
 import {reducer} from '../Reducer/reducer';
 import {app} from '../firebase/firebaseApp';
 import { onAuthStateChanged, getAuth } from "firebase/auth";
-import { Navigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 import { type } from "../Type/reducerType";
 
 // create context
@@ -12,9 +12,11 @@ export const context = createContext();
 export function SetContext({children}){
     const auth = getAuth();
 
+    //reducer state
     const initialState = [];
     const[state, dispatch] = useReducer(reducer, initialState);
 
+    // reducer type
     const {SET_EMAIL_USERNAME} = type;
 
     const [authValue, setAuthValue] = useState('');
@@ -23,19 +25,23 @@ export function SetContext({children}){
     useEffect(()=>{
         onAuthStateChanged(auth, (authSnapShot)=>{
             if(authSnapShot){
+                 //current auth user
                 setAuthValue(authSnapShot);
+
+                //extracting username from user email
                 const username_extract = authSnapShot.email;
                 const stringIndex = username_extract.indexOf('@');
                 const username = username_extract.substring(0, stringIndex);
+
                 setPending(false);
-                dispatch({type:SET_EMAIL_USERNAME, email:authSnapShot.email, username:username})
+                dispatch({type:SET_EMAIL_USERNAME, email:authSnapShot.email, username:username});
             }else{
                 setAuthValue(null);
                 setPending(false);
         }})
     }, []);
     
- 
+ //current auth user
     const currentUserEmail = (snapshot)=>{
         setAuthValue(snapshot);
         setPending(false);
