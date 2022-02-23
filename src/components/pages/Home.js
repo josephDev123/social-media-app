@@ -21,6 +21,7 @@ export function Home() {
   const [tweetUrl,setTweetUrl] = useState('');
   const [extracTweet,getTweet] = useState([]);
   const [loadingTweet,setLoadingTweet] = useState(true);
+  const [media,setMedia] = useState(true);
 
   //adding tweet function
   function handleTweetSubmit(e){
@@ -33,7 +34,7 @@ export function Home() {
         username:uid.state[0].username,
         id:uidEmail,
         tweet:{feed:tweet, url:tweetUrl},
-        time: serverTimestamp(),
+        time: new Date(),
       }).then(snapshot=>console.log(snapshot.id)).catch(e=>console.log(e.code))
       setTweet(' ');
       setTweetUrl('');
@@ -61,6 +62,10 @@ useEffect(()=>{
 
 }, [])
 
+function handleFileClick(e){
+  console.log(e.files[0]);
+}
+
   return (
     <div className='home_container'>
         <h6 className='pb-4'>Home</h6>
@@ -85,7 +90,7 @@ useEffect(()=>{
                 <i className="fas fa-file-upload img"></i>
               </label>
 
-              <input id="file-input" type="file" />
+              <input id="file-input" type="file" onChange={handleFileClick}/>
             </div>
               <div className='tweet_btn_wrapper'>
                 <button type='submit' className='tweet_btn'>Tweet</button>

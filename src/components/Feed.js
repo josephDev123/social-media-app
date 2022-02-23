@@ -3,7 +3,7 @@ import { Fragment } from 'react/cjs/react.production.min';
 import './css/feed.css';
 
 export default function Feed({loading, loaded_feed}) {
-
+ 
   const feeds = loaded_feed.map((feed)=>{
       return (
         <div className='d-flex feed_wrapper' key={feed.uid}>
@@ -13,7 +13,9 @@ export default function Feed({loading, loaded_feed}) {
           
           <div>
             <div className='d-flex'>
-                <span className='username me-2'>{feed.username} </span><span className='username-sm'>@josephUzuegbu</span>
+                <span className='username me-2'>{feed.username} </span><span className='username-sm'>
+                {feed.time.toDate().toDateString()}
+                </span>
             </div>
             
               <p className='feed'>{feed.tweet.feed}</p>
