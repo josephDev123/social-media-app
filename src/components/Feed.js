@@ -23,7 +23,7 @@ export default function Feed({loading, loaded_feed}) {
     
               {/* media space */}
               <div className='feed_media'>
-    
+                <img src='' alt=''/>
               </div>
           </div>
       </div>

@@ -6,9 +6,13 @@ import { useContext, useState, useEffect } from 'react';
 import { context } from '../Context/context';
 import { app } from '../firebase/firebaseApp';
 import {getFirestore, addDoc, serverTimestamp, collection, onSnapshot} from 'firebase/firestore';
+import {getStorage, ref} from "firebase/storage";
 
 
 export function Home() {
+    // firebase storage
+    const storage  = getStorage(app);
+
   //firebase database
   const db = getFirestore();
   
@@ -21,11 +25,18 @@ export function Home() {
   const [tweetUrl,setTweetUrl] = useState('');
   const [extracTweet,getTweet] = useState([]);
   const [loadingTweet,setLoadingTweet] = useState(true);
-  const [media,setMedia] = useState(true);
+  const [media,setMedia] = useState('');
+  const [imgPreview,setImgPreview] = useState('');
+  const [storageFile, setStorageFile] = useState('');
 
   //adding tweet function
   function handleTweetSubmit(e){
     e.preventDefault();
+  // Points to the root reference
+const storageRef = ref(storage);
+ref(storageRef, `feed_img/${storageFile}`);
+
+
    // document reference in firebase
       const docRef = collection(db, 'feeds');
       //add data to it
@@ -34,10 +45,14 @@ export function Home() {
         username:uid.state[0].username,
         id:uidEmail,
         tweet:{feed:tweet, url:tweetUrl},
+        tweet_img: storageFile,
         time: new Date(),
-      }).then(snapshot=>console.log(snapshot.id)).catch(e=>console.log(e.code))
+      }).then(snapshot=>
+        console.log(snapshot.id)
+        ).catch(e=>console.log(e.code))
       setTweet(' ');
       setTweetUrl('');
+      setImgPreview('')
   }
 
   //get feed collection from firebase
@@ -62,9 +77,29 @@ useEffect(()=>{
 
 }, [])
 
-function handleFileClick(e){
-  console.log(e.files[0]);
+function handleFileChange(e){
+  setStorageFile(e.target.files[0].name);
+ console.log(e.target.files[0].name);
+ //get the file in order to store it in firebase storage
+//  storeImageToStorage(e.target.files[0]);
+  const localImgUrl = URL.createObjectURL(e.target.files[0]);
+  setImgPreview(localImgUrl);
+  e.onLoad = ()=>{
+    URL.revokeObjectURL(e.src);
+  }
 }
+
+
+// function setStorage(){
+//   // Points to 'images'
+// const imagesRef = ref(storageRef, `feed_img/${storageFile}`);
+// return imagesRef;
+
+// }
+
+
+
+
 
   return (
     <div className='home_container'>
@@ -75,8 +110,13 @@ function handleFileClick(e){
               <span className="input-group-text"><img src='asset/avatar/avatar.jpg' alt='' className='img-fluid' width='30px' height='30px'></img></span>
               <textarea className="form-control tweet_box" width='20px' height='20px' placeholder="What is Happening?" value={tweet} onChange={(e)=>setTweet(e.target.value)}></textarea>
           </div>
-    
-        
+
+          <br/>
+           {imgPreview && <div className='upload_img_preview'>
+            <img src={imgPreview} alt='upload image' width="auto"/>
+          </div>
+        }
+          
           <br/>
           {/* <label htmlFor="basic-url" className="form-label">Your vanity URL</label> */}
           <div className="input-group mb-3">
@@ -90,7 +130,7 @@ function handleFileClick(e){
                 <i className="fas fa-file-upload img"></i>
               </label>
 
-              <input id="file-input" type="file" onChange={handleFileClick}/>
+              <input id="file-input" type="file" onChange={handleFileChange}/>
             </div>
               <div className='tweet_btn_wrapper'>
                 <button type='submit' className='tweet_btn'>Tweet</button>
