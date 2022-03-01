@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+// import { getStorage } from "firebase/storage";
 const firebaseConfig = {
   apiKey: "AIzaSyC8NFr4ItJX48Ns3YSCsy3dL_YPqVw8bWM",
   authDomain: "twitter-clone-66b0f.firebaseapp.com",
@@ -11,3 +12,4 @@ const firebaseConfig = {
 
 // Initialize Firebase
  export const app = initializeApp(firebaseConfig);
+//  export const storage = getStorage(app);

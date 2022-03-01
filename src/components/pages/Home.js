@@ -5,13 +5,13 @@ import Feed from '../Feed';
 import { useContext, useState, useEffect } from 'react';
 import { context } from '../Context/context';
 import { app } from '../firebase/firebaseApp';
-import {getFirestore, addDoc, serverTimestamp, collection, onSnapshot} from 'firebase/firestore';
-import {getStorage, ref} from "firebase/storage";
+import {getFirestore, addDoc, collection, onSnapshot} from 'firebase/firestore';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 
 export function Home() {
     // firebase storage
-    const storage  = getStorage(app);
+  const storage  = getStorage();
 
   //firebase database
   const db = getFirestore();
@@ -25,17 +25,18 @@ export function Home() {
   const [tweetUrl,setTweetUrl] = useState('');
   const [extracTweet,getTweet] = useState([]);
   const [loadingTweet,setLoadingTweet] = useState(true);
-  const [media,setMedia] = useState('');
   const [imgPreview,setImgPreview] = useState('');
-  const [storageFile, setStorageFile] = useState('');
+  const [uploadFile, setUploadFile] = useState('');
+  const [imgProgress, setImgProgress] = useState(0);
+ const  [uploadedImg , setUploadedImg] =useState('');
+  console.log(imgProgress);
+  console.log(uploadedImg);
 
   //adding tweet function
   function handleTweetSubmit(e){
     e.preventDefault();
-  // Points to the root reference
-const storageRef = ref(storage);
-ref(storageRef, `feed_img/${storageFile}`);
 
+  uploadImgToStorage()
 
    // document reference in firebase
       const docRef = collection(db, 'feeds');
@@ -45,14 +46,14 @@ ref(storageRef, `feed_img/${storageFile}`);
         username:uid.state[0].username,
         id:uidEmail,
         tweet:{feed:tweet, url:tweetUrl},
-        tweet_img: storageFile,
+        tweet_img: uploadFile.name,
         time: new Date(),
       }).then(snapshot=>
         console.log(snapshot.id)
         ).catch(e=>console.log(e.code))
       setTweet(' ');
       setTweetUrl('');
-      setImgPreview('')
+      setImgPreview('');
   }
 
   //get feed collection from firebase
@@ -61,13 +62,13 @@ useEffect(()=>{
   onSnapshot(feedCollectionRef, (snapshot)=>{
     const feeds = [];
     if(snapshot){
-        snapshot.forEach(feed => {
+          snapshot.forEach(feed => {
           setLoadingTweet(false);
           feeds.push(feed.data());
         })
       }else{
-      setLoadingTweet(false);
-      feeds.push(' ');
+        setLoadingTweet(false);
+        feeds.push(' ');
     };
     
     getTweet(feeds);
@@ -78,8 +79,7 @@ useEffect(()=>{
 }, [])
 
 function handleFileChange(e){
-  setStorageFile(e.target.files[0].name);
- console.log(e.target.files[0].name);
+  setUploadFile(e.target.files[0]);
  //get the file in order to store it in firebase storage
 //  storeImageToStorage(e.target.files[0]);
   const localImgUrl = URL.createObjectURL(e.target.files[0]);
@@ -90,12 +90,71 @@ function handleFileChange(e){
 }
 
 
-// function setStorage(){
-//   // Points to 'images'
-// const imagesRef = ref(storageRef, `feed_img/${storageFile}`);
-// return imagesRef;
+ function uploadImgToStorage(){
+  // if file is empty
+  if(uploadFile === ''){
+    return;
+  }else{
+     // if file is not empty
 
-// }
+    // Upload file and metadata to the object 'images/mountains.jpg'
+    const storageRef = ref(storage,  `feed_img/${uploadFile.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, uploadFile);
+
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        setImgProgress(progress);
+        switch (snapshot.state) {
+          case 'paused':
+            console.log('Upload is paused');
+            break;
+          case 'running':
+            console.log('Upload is running');
+            break;
+
+            default:
+              return;
+        }
+      }, 
+      (error) => {
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        switch (error.code) {
+          case 'storage/unauthorized':
+
+           console.log("User doesn't have permission to access the object")
+            break;
+          case 'storage/canceled':
+            console.log( "User canceled the upload")
+            break;
+
+          // ...
+
+          case 'storage/unknown':
+            console.log("Unknown error occurred, inspect error.serverResponse");
+            break;
+            
+            default:
+              return;
+        }
+      }, 
+      () => {
+        // Upload completed successfully, now we can get the download URL
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImgProgress(0);
+          console.log('File available at', downloadURL);
+          setUploadedImg(downloadURL)
+        });
+      }
+    );
+      }
+
+
+}
 
 
 
@@ -110,10 +169,12 @@ function handleFileChange(e){
               <span className="input-group-text"><img src='asset/avatar/avatar.jpg' alt='' className='img-fluid' width='30px' height='30px'></img></span>
               <textarea className="form-control tweet_box" width='20px' height='20px' placeholder="What is Happening?" value={tweet} onChange={(e)=>setTweet(e.target.value)}></textarea>
           </div>
-
+            
+            {imgProgress > 1 && <div><label for="file">Downloading progress:</label><progress value={imgProgress} max="100">{imgProgress}</progress></div>}
+       
           <br/>
            {imgPreview && <div className='upload_img_preview'>
-            <img src={imgPreview} alt='upload image' width="auto"/>
+            <img src={imgPreview} alt='upload_image' width="auto" />
           </div>
         }
           

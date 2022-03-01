@@ -1,10 +1,18 @@
-import React from 'react';
-import { Fragment } from 'react/cjs/react.production.min';
+import React, { useState } from 'react';
+
+// import { Fragment } from 'react/cjs/react.production.min';
 import './css/feed.css';
 
 export default function Feed({loading, loaded_feed}) {
- 
+
+const handleuploadFileName = (name)=>{
+  
+}
+
+  // const [uploadFileName, setUploadedFileName] =useState('');
+
   const feeds = loaded_feed.map((feed)=>{
+    
       return (
         <div className='d-flex feed_wrapper' key={feed.uid}>
           <div className='me-3'>
@@ -23,21 +31,12 @@ export default function Feed({loading, loaded_feed}) {
     
               {/* media space */}
               <div className='feed_media'>
-                <img src='' alt=''/>
+                <img src={handleuploadFileName(feed.tweet_img)} alt={feed.tweet_img}/>
               </div>
           </div>
       </div>
       )
     })
-   
-
-//   else{
-//     const feeds=  (<div className="d-flex justify-content-center">
-//             <span className="visually-hidden">No tweet...</span>
-//      </div>   )
-  
-// }
-
 
 
 
