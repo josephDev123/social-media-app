@@ -200,7 +200,7 @@ function handleFileChange(e){
       </form>
       <hr/>
         {/* feed component */}
-        <Feed loading={loadingTweet} loaded_feed={extracTweet} />
+        <Feed loading={loadingTweet} loaded_feed={extracTweet}  tweetImg={uploadedImg}/>
 
     </div>
   );
