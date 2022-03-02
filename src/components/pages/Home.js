@@ -28,9 +28,8 @@ export function Home() {
   const [imgPreview,setImgPreview] = useState('');
   const [uploadFile, setUploadFile] = useState('');
   const [imgProgress, setImgProgress] = useState(0);
- const  [uploadedImg , setUploadedImg] =useState('');
-  console.log(imgProgress);
-  console.log(uploadedImg);
+  const [DownloadUrlLink, setDownloadUrlLink] = useState([]);
+ 
 
   //adding tweet function
   function handleTweetSubmit(e){
@@ -89,7 +88,7 @@ function handleFileChange(e){
   }
 }
 
-
+//send image to firebase storage
  function uploadImgToStorage(){
   // if file is empty
   if(uploadFile === ''){
@@ -147,7 +146,7 @@ function handleFileChange(e){
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImgProgress(0);
           console.log('File available at', downloadURL);
-          setUploadedImg(downloadURL)
+          setDownloadUrlLink((prev)=> [ ...prev, downloadURL]);
         });
       }
     );
@@ -170,7 +169,7 @@ function handleFileChange(e){
               <textarea className="form-control tweet_box" width='20px' height='20px' placeholder="What is Happening?" value={tweet} onChange={(e)=>setTweet(e.target.value)}></textarea>
           </div>
             
-            {imgProgress > 1 && <div><label for="file">Downloading progress:</label><progress value={imgProgress} max="100">{imgProgress}</progress></div>}
+            {imgProgress > 1 && <div><label for="file">Upoading progress:</label><progress value={imgProgress} max="100">{imgProgress}</progress></div>}
        
           <br/>
            {imgPreview && <div className='upload_img_preview'>
@@ -200,7 +199,7 @@ function handleFileChange(e){
       </form>
       <hr/>
         {/* feed component */}
-        <Feed loading={loadingTweet} loaded_feed={extracTweet}  tweetImg={uploadedImg}/>
+        <Feed loading={loadingTweet} loaded_feed={extracTweet} downloadUrl= {DownloadUrlLink} />
 
     </div>
   );
