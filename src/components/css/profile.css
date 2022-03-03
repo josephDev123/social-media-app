@@ -1,5 +1,36 @@
 .profile_header{
-    background-image: url('/asset/header_img/profile_header_img1.jpg');
-    /* background-color: ''; */
-    height: 200px;
+    background-image: url("/public/asset/header_img/profile_header_img2.jpg");
+    height: 150px;
+    position: relative;
+
 }
+
+.profile_img_container{
+    position: absolute;
+    top: 100px;
+    left: 20px;
+}
+
+.edit_btn{
+    border-width:1px ;
+    border-radius: 10px;
+    font-size: 12px;
+    padding: 8px;
+    background-color: #FFFFFF;
+
+}
+
+.edit_btn:hover{
+    background-color: #CFD9DE;
+    transition: background-color 1s linear;
+
+}
+
+.profile_following:hover{
+text-decoration: underline;
+text-decoration-color: black;
+}
+.profile_followers:hover{
+    text-decoration: underline;
+    text-decoration-color: black;
+    }
