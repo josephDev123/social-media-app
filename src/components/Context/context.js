@@ -24,7 +24,8 @@ export function SetContext({children}){
 
     useEffect(()=>{
         onAuthStateChanged(auth, (authSnapShot)=>{
-            if(authSnapShot){
+            if(authSnapShot.uid){
+                // console.log(authSnapShot.uid);
                  //current auth user
                 setAuthValue(authSnapShot);
 

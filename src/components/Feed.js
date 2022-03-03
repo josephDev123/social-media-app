@@ -4,7 +4,6 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import './css/feed.css';
 
 export default function Feed({loading, loaded_feed, downloadUrl}) {
-  console.log(downloadUrl)
 
     const handleuploadFileName = (name)=>{
       // Create a reference to the file we want to download

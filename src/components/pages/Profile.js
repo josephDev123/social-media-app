@@ -1,10 +1,20 @@
 import React from 'react';
 import '../css/profile.css';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { context } from '../Context/context';
+import ProfileModal from './ProfileModal';
 
 export default function Profile() {
-  const {state} = useContext(context);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const contextStorage = useContext(context);
+  console.log(contextStorage);
+
+  const {state} = contextStorage
+
+  // const show = ()=>{
+  //   setIsOpen(!modalIsOpen)
+  // }
+
 
   return (
       <div style={{ margin: '0 auto', width: '100%' }}>
@@ -51,6 +61,7 @@ export default function Profile() {
             <p className='profile_following'>Following</p> <p className='profile_followers'>Followers</p>
         </div>
 
+      {/* <ProfileModal onShow = {show} modalStatus = {modalIsOpen}/> */}
       </div>
     );
 }
