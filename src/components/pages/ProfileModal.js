@@ -1,6 +1,11 @@
 import React from 'react'
+import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import { useState } from 'react';
+
+// Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
+// Modal.setAppElement('root');
+Modal.setAppElement(document.getElementById('root'));
 
 export default function ProfileModal({onShow, modalStatus}) {
 

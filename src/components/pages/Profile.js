@@ -6,14 +6,15 @@ import ProfileModal from './ProfileModal';
 
 export default function Profile() {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const contextStorage = useContext(context);
-  console.log(contextStorage);
+  const {authValue}  = useContext(context);
+  // extracting username from user email
+  const email = authValue.email;
+  const stringIndex = email.indexOf('@');
+  const username = email.substring(0, stringIndex);
 
-  const {state} = contextStorage
-
-  // const show = ()=>{
-  //   setIsOpen(!modalIsOpen)
-  // }
+  const show = ()=>{
+    setIsOpen(!modalIsOpen)
+  }
 
 
   return (
@@ -32,7 +33,7 @@ export default function Profile() {
       
         <div className='profile_username_container'>
           <h6 className='fw-bold mt-4'>Joseph uzuegbu</h6>
-          <p className='lh-1'>{state[0].username}</p>
+          <p className='lh-1'>{username}</p>
         </div>
         
           <div className='profile_bio_container'>
@@ -46,7 +47,7 @@ export default function Profile() {
 
           
         <div className='profile_email_container'>
-                 <p>{state[0].userEmail} </p>     
+                 <p>{email} </p>     
           </div>
 
           <div className='profile_website_container'>
@@ -61,7 +62,7 @@ export default function Profile() {
             <p className='profile_following'>Following</p> <p className='profile_followers'>Followers</p>
         </div>
 
-      {/* <ProfileModal onShow = {show} modalStatus = {modalIsOpen}/> */}
+      <ProfileModal onShow = {show} modalStatus = {modalIsOpen}/>
       </div>
     );
 }
