@@ -30,7 +30,7 @@ useEffect(()=>{
         <div className='profile_header'>
          {/* //profile image */}
           <div className='profile_img_container'>
-              <img className='img-fluid rounded-circle img-thumbnail' src='asset/avatar/avatar.jpg' alt='' width='100px' height='100px'/>    
+              <img className='img-fluid rounded-circle img-thumbnail profile_img' src={profile.profile_img?profile.profile_img:'asset/avatar/avatar.jpg'} alt='' width='100px' height='100px'/>    
           </div>
         </div>
 
