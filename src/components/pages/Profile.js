@@ -3,6 +3,7 @@ import '../css/profile.css';
 import { useContext, useState, useEffect } from 'react';
 import { context } from '../Context/context';
 import ProfileModal from './ProfileModal';
+import { Link } from 'react-router-dom';
 import {setDoc, getFirestore, doc, collection, onSnapshot} from 'firebase/firestore';
 
 
@@ -55,7 +56,7 @@ useEffect(()=>{
           </div>
 
           <div className='profile_website_container'>
-               <link to={profile.website} target='_blank'></link>                 
+               <a href={profile.website} target='_blank'>Website</a>                 
           </div>
 
         <div className='profile_location_container'>
@@ -66,7 +67,7 @@ useEffect(()=>{
             <p className='profile_following'>Following</p> <p className='profile_followers'>Followers</p>
         </div>
 
-     <   ProfileModal  currentAuthPerson = {authValue.email}/>
+        <ProfileModal  currentAuthPerson = {authValue.email}/>
       </div>
     );
 }

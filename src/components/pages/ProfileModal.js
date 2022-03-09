@@ -36,7 +36,7 @@ function handleEditProfile(e){
     'birth_day':birth,
     'profile_img':uploadImg_url
 
-  }).then(snapShot=>{
+  }, { merge: true }).then(snapShot=>{
     setName('');
     setBio('');
     setLocation('');
@@ -59,7 +59,12 @@ useEffect(()=>{
     setBirth(birth_day)
     setUploadImg_url(profile_img)
   }))
-}, []);
+
+  // return ()=>{
+  //   setUploadImg_url('');
+  // }
+
+}, [currentAuthPerson]);
 
 
 
@@ -123,7 +128,7 @@ uploadTask.on('state_changed',
   () => {
     // Upload completed successfully, now we can get the download URL
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      setProfile_img('')
+      setProfile_img('');
       setUploadImg_url(downloadURL);
     });
   }
@@ -135,7 +140,7 @@ uploadTask.on('state_changed',
 useEffect(()=>{
   //reference Database
   const collectionRef = collection(db, 'profile');
-  const docRef = doc(collectionRef, authValue.email )
+  const docRef = doc(collectionRef, authValue.email)
   setDoc(docRef, {
     // 'name':name,
     // 'bio':bio,
@@ -154,9 +159,11 @@ useEffect(()=>{
   })
   .catch(e=>console.log(e.code));
 
-}, [uploadImg_url]);
+  // return ()=>{
+  //   setUploadImg_url('');
+  // }
 
-
+}, [ authValue]);
 
 
   return (
@@ -172,10 +179,10 @@ useEffect(()=>{
             </div>
             <div className="modal-body">
               <div className='edit_img_container'>
-                <img className='img-fluid rounded-circle img-thumbnail profile_img' src={uploadImg_url?uploadImg_url:'asset/avatar/avatar.jpg' } alt=''  width='100px' height=''/> 
+                <img className='img-fluid rounded-circle img-thumbnail profile_img' src={uploadImg_url?uploadImg_url:'asset/avatar/avatar.jpg' } alt='profile_image'  width='100px' height='100px'/> 
                 <br/><br/>
-                <input type='file' className='form-control' onChange={handleProfileChange} value={profile_img}/>
-                <button type='file' className='btn btn-primary mt-2' onClick={handleProfileEdit}>Edit image</button>
+                <input type='file' className='form-control' onChange={handleProfileChange}/>
+                <button type='button' className='btn btn-primary mt-2' onClick={handleProfileEdit}>Edit image</button>
               </div>
               <br/>
               <form onSubmit={handleEditProfile}>
@@ -185,15 +192,13 @@ useEffect(()=>{
                 </div>
                 <div className="mb-3">
                   <textarea className="form-control" id="message-text" placeholder='Bio'
-                   onChange={(e)=>setBio(e.target.value)}
-                   value={bio}
+                   onChange={(e)=>setBio(e.target.value)} value={bio}
                   ></textarea>
                 </div>
 
                 <div className="mb-3">
                   <input type="text" className="form-control" id="recipient-name" placeholder='Location'
                    onChange={(e)=>setLocation(e.target.value)} value={location}/>
-                     
                 </div>
 
                 <div className="mb-3">
