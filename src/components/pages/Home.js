@@ -1,5 +1,5 @@
 import React from 'react';
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import '../css/home_page.css';
 import Feed from '../Feed';
 import { useContext, useState, useEffect } from 'react';
@@ -28,75 +28,17 @@ export function Home() {
   const [imgPreview,setImgPreview] = useState('');
   const [uploadFile, setUploadFile] = useState('');
   const [imgProgress, setImgProgress] = useState(0);
-  const [DownloadUrlLink, setDownloadUrlLink] = useState([]);
+  // const [DownloadUrlLink, setDownloadUrlLink] = useState([]);
  
-
   //adding tweet function
   function handleTweetSubmit(e){
     e.preventDefault();
-
-  uploadImgToStorage()
+  // uploadImgToStorage()
 
    // document reference in firebase
       const docRef = collection(db, 'feeds');
-      //add data to it
-      addDoc(docRef, {
-        uid:uuidv4(),
-        username:uid.state[0].username,
-        id:uidEmail,
-        tweet:{feed:tweet, url:tweetUrl},
-        tweet_img: uploadFile.name,
-        time: new Date(),
-      }).then(snapshot=>
-        console.log(snapshot.id)
-        ).catch(e=>console.log(e.code))
-      setTweet(' ');
-      setTweetUrl('');
-      setImgPreview('');
-  }
 
-  //get feed collection from firebase
-useEffect(()=>{
-  const feedCollectionRef = collection(db, 'feeds');
-  onSnapshot(feedCollectionRef, (snapshot)=>{
-    const feeds = [];
-    if(snapshot){
-          snapshot.forEach(feed => {
-          setLoadingTweet(false);
-          feeds.push(feed.data());
-        })
-      }else{
-        setLoadingTweet(false);
-        feeds.push(' ');
-    };
-    
-    getTweet(feeds);
-  }, (error)=>{
-    console.log(error.code);
-  })
-
-}, [])
-
-function handleFileChange(e){
-  setUploadFile(e.target.files[0]);
- //get the file in order to store it in firebase storage
-//  storeImageToStorage(e.target.files[0]);
-  const localImgUrl = URL.createObjectURL(e.target.files[0]);
-  setImgPreview(localImgUrl);
-  e.onLoad = ()=>{
-    URL.revokeObjectURL(e.src);
-  }
-}
-
-//send image to firebase storage
- function uploadImgToStorage(){
-  // if file is empty
-  if(uploadFile === ''){
-    return;
-  }else{
-     // if file is not empty
-
-    // Upload file and metadata to the object 'images/mountains.jpg'
+      // Upload file and metadata to the object 'images/mountains.jpg'
     const storageRef = ref(storage,  `feed_img/${uploadFile.name}`);
     const uploadTask = uploadBytesResumable(storageRef, uploadFile);
 
@@ -142,18 +84,73 @@ function handleFileChange(e){
         }
       }, 
       () => {
+
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImgProgress(0);
           console.log('File available at', downloadURL);
-          setDownloadUrlLink((prev)=> [ ...prev, downloadURL]);
+            
+          //add data to it
+            addDoc(docRef, {
+              // uid:uuidv4(),
+              username:uid.state[0].username,
+              emailAsid:uidEmail,
+              tweet:{feed:tweet, url:tweetUrl},
+              tweet_img: downloadURL,
+              time: new Date(),
+            }).then(snapshot=>
+              console.log(snapshot.id)
+              ).catch(e=>console.log(e.code))
+              setTweet(' ');
+              setTweetUrl('');
+              setImgPreview('');
+              setUploadFile('');
+
         });
       }
     );
-      }
+  }
+
+  //get feed collection from firebase
+useEffect(()=>{
+  let fetch =true;
+  const feedCollectionRef = collection(db, 'feeds');
+  onSnapshot(feedCollectionRef, (snapshot)=>{
+    
+    const feeds = [];
+  
+    if(snapshot && fetch){
+          snapshot.forEach(feed => {
+          setLoadingTweet(false);
+          feeds.push({...feed.data(), id:feed.id});
+        })
+      }else{
+        setLoadingTweet(false);
+        feeds.push(' ');
+    };
+    
+    getTweet(feeds);
+  }, (error)=>{
+    console.log(error.code);
+  })
+
+  return ()=>{
+   fetch=false;
+  }
+
+}, []);
 
 
+// set the image and also set it preview
+function handleFileChange(e){
+  setUploadFile(e.target.files[0]);
+  const localImgUrl = URL.createObjectURL(e.target.files[0]);
+  setImgPreview(localImgUrl);
+  e.onLoad = ()=>{
+    URL.revokeObjectURL(e.src);
+  }
 }
+
 
 
 
@@ -169,9 +166,11 @@ function handleFileChange(e){
               <textarea className="form-control tweet_box" width='20px' height='20px' placeholder="What is Happening?" value={tweet} onChange={(e)=>setTweet(e.target.value)}></textarea>
           </div>
             
-            {imgProgress > 1 && <div><label for="file">Upoading progress:</label><progress value={imgProgress} max="100">{imgProgress}</progress></div>}
+            {imgProgress > 1 && <div><label htmlFor="file">Upoading progress:</label><progress value={imgProgress} max="100">{imgProgress}</progress></div>}
        
           <br/>
+
+          {/* selected image preview */}
            {imgPreview && <div className='upload_img_preview'>
             <img src={imgPreview} alt='upload_image' width="auto" />
           </div>
@@ -199,7 +198,7 @@ function handleFileChange(e){
       </form>
       <hr/>
         {/* feed component */}
-        <Feed loading={loadingTweet} loaded_feed={extracTweet} downloadUrl= {DownloadUrlLink} />
+        <Feed loading={loadingTweet} loaded_feed={extracTweet}/>
 
     </div>
   );
