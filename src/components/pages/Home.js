@@ -33,10 +33,28 @@ export function Home() {
   //adding tweet function
   function handleTweetSubmit(e){
     e.preventDefault();
-  // uploadImgToStorage()
 
    // document reference in firebase
       const docRef = collection(db, 'feeds');
+
+      if(!uploadFile){
+        //add data to it
+        addDoc(docRef, {
+          // uid:uuidv4(),
+          username:uid.state[0].username,
+          emailAsid:uidEmail,
+          tweet:{feed:tweet, url:tweetUrl},
+          tweet_img: '',
+          time: new Date(),
+        }).then(snapshot=>
+          console.log(snapshot.id)
+          ).catch(e=>console.log(e.code))
+          setTweet(' ');
+          setTweetUrl('');
+          setImgPreview('');
+          setUploadFile('');
+      }else{
+        
 
       // Upload file and metadata to the object 'images/mountains.jpg'
     const storageRef = ref(storage,  `feed_img/${uploadFile.name}`);
@@ -106,12 +124,14 @@ export function Home() {
               setImgPreview('');
               setUploadFile('');
 
-        });
-      }
-    );
+          });
+        }
+      );
+    };
+ 
   }
 
-  //get feed collection from firebase
+  //get feed collection from firebase firestore
 useEffect(()=>{
   let fetch =true;
   const feedCollectionRef = collection(db, 'feeds');
@@ -150,10 +170,6 @@ function handleFileChange(e){
     URL.revokeObjectURL(e.src);
   }
 }
-
-
-
-
 
 
   return (

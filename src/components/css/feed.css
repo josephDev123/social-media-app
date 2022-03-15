@@ -11,11 +11,13 @@
 .feed{
     font-size: 12px;
     font-weight: lighter;
+    /* max-width: 300px; */
 }
 
 .feed_wrapper{
     padding: 10px;
     border: 1px solid #E7E7E8;
+    /* max-width: 400px; */
 }
 
 .feed_wrapper:hover{
