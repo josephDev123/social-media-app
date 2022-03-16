@@ -11,13 +11,15 @@ export default function Profile() {
   const {authValue}  = useContext(context);
   //state
   const [profile, setProfile] =useState('');
+  // firebase storage
   const db = getFirestore();
   // extracting username from user email
   const email = authValue.email;
   const stringIndex = email.indexOf('@');
   const username = email.substring(0, stringIndex);
 
-  
+  // getting the profile data from firebase firestore in profile collection
+
 useEffect(()=>{
   onSnapshot(doc(collection(db,"profile"), authValue.email), (snapShot =>{
     setProfile(snapShot.data());
@@ -31,7 +33,7 @@ useEffect(()=>{
         <div className='profile_header'>
          {/* //profile image */}
           <div className='profile_img_container'>
-              <img className='img-fluid rounded-circle img-thumbnail profile_img' src={profile.profile_img?profile.profile_img:'asset/avatar/avatar.jpg'} alt='' width='100px' height='100px'/>    
+              <img className='img-fluid rounded-circle img-thumbnail profile_img' src={profile ?profile.profile_url:'asset/avatar/avatar.jpg'} alt='' width='100px' height='100px'/>    
           </div>
         </div>
 
@@ -42,12 +44,12 @@ useEffect(()=>{
 
       
         <div className='profile_username_container'>
-          <h6 className='fw-bold mt-4'>{profile.name}</h6>
+          <h6 className='fw-bold mt-4'>{profile?.name}</h6>
           <p className='lh-1'>{username}</p>
         </div>
         
           <div className='profile_bio_container'>
-                 <p>{profile.bio}</p>     
+                 <p>{profile?.bio}</p>     
           </div>
 
           
@@ -56,17 +58,17 @@ useEffect(()=>{
           </div>
 
           <div className='profile_website_container'>
-               <a href={profile.website} target='_blank'>Website</a>                 
+               <a href={profile?.website} target='_blank'>Website</a>                 
           </div>
 
         <div className='profile_location_container'>
-                <p>{profile.location}</p>                        
+                <p>{profile?.location}</p>                        
         </div>
 
         <div className='profile_following_container d-flex justify-content-between'>
             <p className='profile_following'>Following</p> <p className='profile_followers'>Followers</p>
         </div>
-
+  {/* profile edit modal */}
         <ProfileModal  currentAuthPerson = {authValue.email}/>
       </div>
     );

@@ -18,7 +18,7 @@ const [location, setLocation] = useState('');
 const [website, setWebsite] = useState('');
 const [birth, setBirth] = useState('');
 const [profile_img, setProfile_img] = useState('');
-const [uploadImg_progress, setUploadImg_progress] = useState('');
+const [uploadImg_progress, setUploadImg_progress] = useState(0);
 const [uploadImg_url, setUploadImg_url] = useState('');
 
 
@@ -27,44 +27,108 @@ function handleEditProfile(e){
   e.preventDefault();
   //reference Database
   const collectionRef = collection(db, 'profile');
-  const docRef = doc(collectionRef, authValue.email )
-  setDoc(docRef, {
-    'name':name,
-    'bio':bio,
-    'location':location,
-    'website':website,
-    'birth_day':birth,
-    'profile_img':uploadImg_url
+// file storage
+  const storage = getStorage();
 
-  }, { merge: true }).then(snapShot=>{
-    setName('');
-    setBio('');
-    setLocation('');
-    setWebsite('');
-    setBirth('')
-    // setProfile_data(snapShot.data());
-  })
-  .catch(e=>console.log(e.code));
+  // Create the file metadata
+  /** @type {any} */
+  const metadata = {
+    contentType: 'image/jpeg'
+  };
+  
+  // Upload file and metadata to the object 'images/mountains.jpg'
+  const storageRef = ref(storage, `profile_img/ ${profile_img.name}`);
+  const uploadTask = uploadBytesResumable(storageRef, profile_img, metadata);
+  
+  // Listen for state changes, errors, and completion of the upload.
+  uploadTask.on('state_changed',
+    (snapshot) => {
+      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      setUploadImg_progress( `${progress}% `);
+      switch (snapshot.state) {
+        case 'paused':
+          console.log('Upload is paused');
+          break;
+        case 'running':
+          console.log('Upload is running');
+          break;
+          default:
+      }
+    }, 
+    (error) => {
+      // A full list of error codes is available at
+      // https://firebase.google.com/docs/storage/web/handle-errors
+      switch (error.code) {
+        case 'storage/unauthorized':
+          // User doesn't have permission to access the object
+          break;
+        case 'storage/canceled':
+          // User canceled the upload
+          break;
+  
+        // ...
+  
+        case 'storage/unknown':
+          // Unknown error occurred, inspect error.serverResponse
+          break;
+          default:
+      }
+    }, 
+    () => {
+      // Upload completed successfully, now we can get the download URL
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        setProfile_img('');
+        setUploadImg_url(downloadURL);
+
+      // edit profile with data
+      const docRef = doc(collectionRef, authValue.email )
+      setDoc(docRef, {
+        'name':name,
+        'bio':bio,
+        'location':location,
+        'website':website,
+        'birth_day':birth,
+        'profile_url':downloadURL,
+    
+      }).then(snapShot=>{
+        setName('');
+        setBio('');
+        setLocation('');
+        setWebsite('');
+        setBirth('')
+        setProfile_img('');
+      })
+      .catch(e=>console.log(e.code));
+
+      });
+    }
+  );
+
 }
 
 
 //fetch data from profile component based on the current user(email)
 useEffect(()=>{
   onSnapshot(doc(collection(db,"profile"), currentAuthPerson), (snapShot =>{
-  const {name, location, website, bio, birth_day, profile_img} = snapShot.data();
-    setName(name);
-    setBio(bio)
-    setLocation(location);
-    setWebsite(website)
-    setBirth(birth_day)
-    setUploadImg_url(profile_img)
+
+    // if(snapShot.data()){
+      const {name, location, website, bio, birth_day, profile_url} = snapShot.data();
+      setName(name);
+      setBio(bio);
+      setLocation(location);
+      setWebsite(website);
+      setBirth(birth_day);
+      setUploadImg_url(profile_url);
+    // }
+ 
   }))
 
   // return ()=>{
   //   setUploadImg_url('');
   // }
 
-}, [currentAuthPerson]);
+}, []);
 
 
 
@@ -73,97 +137,6 @@ function handleProfileChange(e){
   const image = e.target.files[0];
   setProfile_img(image);
 }
-
-
-
-// upload image to firebase storage in order to get the downloade url to send to profile folder in firebase firestore
-function handleProfileEdit(){
-const storage = getStorage();
-
-// Create the file metadata
-/** @type {any} */
-const metadata = {
-  contentType: 'image/jpeg'
-};
-
-// Upload file and metadata to the object 'images/mountains.jpg'
-const storageRef = ref(storage, `profile_img/ ${profile_img.name}`);
-const uploadTask = uploadBytesResumable(storageRef, profile_img, metadata);
-
-// Listen for state changes, errors, and completion of the upload.
-uploadTask.on('state_changed',
-  (snapshot) => {
-    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    setUploadImg_progress( `${progress}% `);
-    switch (snapshot.state) {
-      case 'paused':
-        console.log('Upload is paused');
-        break;
-      case 'running':
-        console.log('Upload is running');
-        break;
-        default:
-    }
-  }, 
-  (error) => {
-    // A full list of error codes is available at
-    // https://firebase.google.com/docs/storage/web/handle-errors
-    switch (error.code) {
-      case 'storage/unauthorized':
-        // User doesn't have permission to access the object
-        break;
-      case 'storage/canceled':
-        // User canceled the upload
-        break;
-
-      // ...
-
-      case 'storage/unknown':
-        // Unknown error occurred, inspect error.serverResponse
-        break;
-        default:
-    }
-  }, 
-  () => {
-    // Upload completed successfully, now we can get the download URL
-    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      setProfile_img('');
-      setUploadImg_url(downloadURL);
-    });
-  }
-);
-
-}
-
-
-useEffect(()=>{
-  //reference Database
-  const collectionRef = collection(db, 'profile');
-  const docRef = doc(collectionRef, authValue.email)
-  setDoc(docRef, {
-    // 'name':name,
-    // 'bio':bio,
-    // 'location':location,
-    // 'website':website,
-    // 'birth_day':birth,
-    'profile_img':uploadImg_url
-
-  }, { merge: true }).then(snapShot=>{
-    // setName('');
-    // setBio('');
-    // setLocation('');
-    // setWebsite('');
-    // setBirth('')
-    // setProfile_data(snapShot.data());
-  })
-  .catch(e=>console.log(e.code));
-
-  // return ()=>{
-  //   setUploadImg_url('');
-  // }
-
-}, [ authValue]);
 
 
   return (
@@ -181,11 +154,18 @@ useEffect(()=>{
               <div className='edit_img_container'>
                 <img className='img-fluid rounded-circle img-thumbnail profile_img' src={uploadImg_url?uploadImg_url:'asset/avatar/avatar.jpg' } alt='profile_image'  width='100px' height='100px'/> 
                 <br/><br/>
-                <input type='file' className='form-control' onChange={handleProfileChange}/>
-                <button type='button' className='btn btn-primary mt-2' onClick={handleProfileEdit}>Edit image</button>
               </div>
               <br/>
               <form onSubmit={handleEditProfile}>
+                <div className="mb-3">
+                  <input type='file' className='form-control' onChange={handleProfileChange}/>
+                </div>
+
+                  {uploadImg_progress > 1 && (<div className="progress mb-2">
+                  <div className="progress-bar" role="progressbar" style={{ width: `${uploadImg_progress}`,  }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{uploadImg_progress}</div>
+                </div>)}
+                
+              
                 <div className="mb-3">
                   <input type="text" className="form-control" id="recipient-name" placeholder='name'
                    onChange={(e)=>setName(e.target.value)} value={name}/>
