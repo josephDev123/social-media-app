@@ -30,6 +30,29 @@ function handleEditProfile(e){
 // file storage
   const storage = getStorage();
 
+  if(!profile_img){
+     // edit profile with data
+     const docRef = doc(collectionRef, authValue.email )
+     setDoc(docRef, {
+       'name':name,
+       'bio':bio,
+       'location':location,
+       'website':website,
+       'birth_day':birth,
+      //  'profile_url':downloadURL,
+   
+     }, {merge:true}).then(snapShot=>{
+       setName('');
+       setBio('');
+       setLocation('');
+       setWebsite('');
+       setBirth('')
+      //  setProfile_img('');
+      
+     })
+     .catch(e=>console.log(e.code));
+  }else{
+    
   // Create the file metadata
   /** @type {any} */
   const metadata = {
@@ -45,7 +68,7 @@ function handleEditProfile(e){
     (snapshot) => {
       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      setUploadImg_progress( `${progress}% `);
+      setUploadImg_progress( progress);
       switch (snapshot.state) {
         case 'paused':
           console.log('Upload is paused');
@@ -78,7 +101,7 @@ function handleEditProfile(e){
     () => {
       // Upload completed successfully, now we can get the download URL
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        setProfile_img('');
+      
         setUploadImg_url(downloadURL);
 
       // edit profile with data
@@ -98,6 +121,7 @@ function handleEditProfile(e){
         setWebsite('');
         setBirth('')
         setProfile_img('');
+       
       })
       .catch(e=>console.log(e.code));
 
@@ -106,13 +130,15 @@ function handleEditProfile(e){
   );
 
 }
+}
 
 
 //fetch data from profile component based on the current user(email)
 useEffect(()=>{
+  let isCancelled = false;
   onSnapshot(doc(collection(db,"profile"), currentAuthPerson), (snapShot =>{
 
-    // if(snapShot.data()){
+    if(!isCancelled){
       const {name, location, website, bio, birth_day, profile_url} = snapShot.data();
       setName(name);
       setBio(bio);
@@ -120,13 +146,15 @@ useEffect(()=>{
       setWebsite(website);
       setBirth(birth_day);
       setUploadImg_url(profile_url);
-    // }
+      setProfile_img('')
+      
+    }
  
   }))
 
-  // return ()=>{
-  //   setUploadImg_url('');
-  // }
+  return ()=>{
+    isCancelled = true;
+  }
 
 }, []);
 
@@ -158,7 +186,7 @@ function handleProfileChange(e){
               <br/>
               <form onSubmit={handleEditProfile}>
                 <div className="mb-3">
-                  <input type='file' className='form-control' onChange={handleProfileChange}/>
+                  <input type='file' className='form-control' onChange={handleProfileChange} />
                 </div>
 
                   {uploadImg_progress > 1 && (<div className="progress mb-2">

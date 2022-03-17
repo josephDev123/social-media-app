@@ -21,11 +21,16 @@ export default function Profile() {
   // getting the profile data from firebase firestore in profile collection
 
 useEffect(()=>{
+  let isCancelled = false;
   onSnapshot(doc(collection(db,"profile"), authValue.email), (snapShot =>{
-    setProfile(snapShot.data());
-  }))
+    if(!isCancelled){
+      setProfile(snapShot.data());
+    }
+  }));
 
-
+return ()=>{
+  isCancelled = true
+}
 }, []);
 
   return (
