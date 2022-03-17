@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-// import { getStorage, ref, getDownloadURL } from "firebase/storage";
-// import { Fragment } from 'react/cjs/react.production.min';
+import React, { useEffect, useState, useContext } from 'react';
+import { context } from './Context/context';
 import './css/feed.css';
 
 export default function Feed({loading, loaded_feed}) {
-console.log(loaded_feed.id);
+const {profileImgLink} = useContext(context);
+
   const feeds = loaded_feed.map((feed)=>{
     // console.log(feed.uid);
     
@@ -12,7 +12,7 @@ console.log(loaded_feed.id);
         <div className='d-flex feed_wrapper mt-2' key={feed.id}>
 
           <div className='me-3'>
-            <img src='asset/avatar/avatar.jpg' alt='' className='img-fluid' width='100px' height='100px' />
+            <img src={profileImgLink?profileImgLink:'asset/avatar/avatar.jpg'} alt='' className='img-fluid rounded-circle img-thumbnail' width='100px' height='100px' />
           </div>
           
           <div>

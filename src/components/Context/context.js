@@ -18,9 +18,12 @@ export function SetContext({children}){
 
     // reducer type
     const {SET_EMAIL_USERNAME} = type;
-
+// state
     const [authValue, setAuthValue] = useState('');
     const [pending, setPending] = useState(true);
+    const [profileImgLink, setProfileImgLink] = useState('');
+
+    console.log(profileImgLink);
 
     useEffect(()=>{
         onAuthStateChanged(auth, (authSnapShot)=>{
@@ -47,6 +50,11 @@ export function SetContext({children}){
         setAuthValue(snapshot);
         setPending(false);
     }
+
+    // grab the profile image once the person update it profile
+    const grapProfileImageFromdownloadURL = (profileImgLink)=>{
+        setProfileImgLink(profileImgLink);
+    }
  
     // console.log(state);
 
@@ -62,7 +70,7 @@ export function SetContext({children}){
     }
 
     return (
-        <context.Provider value={{ authValue, currentUserEmail, state, dispatch }}>
+        <context.Provider value={{ authValue, currentUserEmail, state, dispatch, profileImgLink, grapProfileImageFromdownloadURL }}>
             {children}
         </context.Provider>
     )

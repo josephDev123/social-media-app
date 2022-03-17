@@ -8,7 +8,7 @@ import {setDoc, getFirestore, doc, collection, onSnapshot} from 'firebase/firest
 
 
 export default function Profile() {
-  const {authValue}  = useContext(context);
+  const {authValue, grapProfileImageFromdownloadURL}  = useContext(context);
   //state
   const [profile, setProfile] =useState('');
   // firebase storage
@@ -25,6 +25,7 @@ useEffect(()=>{
   onSnapshot(doc(collection(db,"profile"), authValue.email), (snapShot =>{
     if(!isCancelled){
       setProfile(snapShot.data());
+      grapProfileImageFromdownloadURL(snapShot.data().profile_url)
     }
   }));
 
