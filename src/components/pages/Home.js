@@ -179,7 +179,7 @@ function handleFileChange(e){
 
     <form onSubmit={handleTweetSubmit}>
           <div className="input-group form-group-sm">
-              <span className="input-group-text"><img src={profileImgLink?profileImgLink: 'asset/avatar/avatar.jpg'} alt='profile image' className='img-fluid rounded-circle img-thumbnail' width='30px' height='30px'></img></span>
+              <span className="input-group-text"><img src={profileImgLink?profileImgLink: 'asset/avatar/avatar.jpg'} alt='profile image' className='img-fluid rounded-circle img-thumbnail' width='50px' height='50px'></img></span>
               <textarea className="form-control tweet_box" width='20px' height='20px' placeholder="What is Happening?" value={tweet} onChange={(e)=>setTweet(e.target.value)}></textarea>
           </div>
             

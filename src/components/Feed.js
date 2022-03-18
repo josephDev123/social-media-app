@@ -12,7 +12,7 @@ const {profileImgLink} = useContext(context);
         <div className='d-flex feed_wrapper mt-2' key={feed.id}>
 
           <div className='me-3'>
-            <img src={profileImgLink?profileImgLink:'asset/avatar/avatar.jpg'} alt='' className='img-fluid rounded-circle img-thumbnail' width='100px' height='100px' />
+            <img src={profileImgLink?profileImgLink:'asset/avatar/avatar.jpg'} alt='' className='img-fluid rounded-circle img-thumbnail' width='50px' height='50px' />
           </div>
           
           <div>
