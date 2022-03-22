@@ -5,24 +5,24 @@ import Feed from '../Feed';
 import { useContext, useState, useEffect } from 'react';
 import { context } from '../Context/context';
 import { app } from '../firebase/firebaseApp';
-import {getFirestore, addDoc, collection, onSnapshot} from 'firebase/firestore';
+import {getFirestore, addDoc, collection, onSnapshot, serverTimestamp} from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 
 export function Home() {
     // firebase storage
   const storage  = getStorage();
-
   //firebase database
   const db = getFirestore();
-  
+  // console.log(new Date().toDateString());
   const {authValue, profileImgLink} =  useContext(context);
  
-
   const uidEmail = authValue.email;
+ 
+  const index = uidEmail.indexOf('@');
+  const username = uidEmail.substr(0, index);
 
-// states
-  const [tweet,setTweet] = useState('');
+  const [tweet, setTweet] = useState('');
   const [tweetUrl,setTweetUrl] = useState('');
   const [extracTweet,getTweet] = useState([]);
   const [loadingTweet,setLoadingTweet] = useState(true);
@@ -42,11 +42,12 @@ export function Home() {
         //add data to it
         addDoc(docRef, {
           // uid:uuidv4(),
-          username:authValue.state[0].username,
+          username:username,
           emailAsid:uidEmail,
           tweet:{feed:tweet, url:tweetUrl},
           tweet_img: '',
           time: new Date(),
+          // personWhoPostedItImg:profileImgLink
         }).then(snapshot=>
           console.log(snapshot.id)
           ).catch(e=>console.log(e.code))
@@ -112,11 +113,12 @@ export function Home() {
           //add data to it
             addDoc(docRef, {
               // uid:uuidv4(),
-              username:authValue.state[0].username,
+              username:username,
               emailAsid:uidEmail,
               tweet:{feed:tweet, url:tweetUrl},
               tweet_img: downloadURL,
               time: new Date(),
+              // personWhoPostedItImg:profileImgLink
             }).then(snapshot=>
               console.log(snapshot.id)
               ).catch(e=>console.log(e.code))
@@ -134,13 +136,13 @@ export function Home() {
 
   //get feed collection from firebase firestore
 useEffect(()=>{
-  let fetch =true;
+  let isCancelled =false;
   const feedCollectionRef = collection(db, 'feeds');
   onSnapshot(feedCollectionRef, (snapshot)=>{
     
     const feeds = [];
   
-    if(snapshot && fetch){
+    if(snapshot && !isCancelled){
           snapshot.forEach(feed => {
           setLoadingTweet(false);
           feeds.push({...feed.data(), id:feed.id});
@@ -156,7 +158,7 @@ useEffect(()=>{
   })
 
   return ()=>{
-   fetch=false;
+    isCancelled=true;
   }
 
 }, []);
@@ -189,7 +191,7 @@ function handleFileChange(e){
 
           {/* selected image preview */}
            {imgPreview && <div className='upload_img_preview'>
-            <img src={imgPreview} alt='upload_image' width="auto" />
+            <img src={imgPreview} alt='upload_image' width='250px' height='100px' />
           </div>
         }
           

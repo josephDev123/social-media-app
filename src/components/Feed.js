@@ -6,8 +6,7 @@ export default function Feed({loading, loaded_feed}) {
 const {profileImgLink} = useContext(context);
 
   const feeds = loaded_feed.map((feed)=>{
-    // console.log(feed.uid);
-    
+    // console.log(feed.time.toDate().toDateString());
       return (
         <div className='d-flex feed_wrapper mt-2' key={feed.id}>
 
@@ -18,7 +17,7 @@ const {profileImgLink} = useContext(context);
           <div>
             <div className='d-flex'>
                 <span className='username me-2'>{feed.username} </span><span className='username-sm'>
-                {feed.time.toDate().toDateString()}
+                {feed.time?.toDate().toDateString()}
                 </span>
             </div>
             
