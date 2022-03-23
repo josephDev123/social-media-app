@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { context } from './Context/context';
 import './css/feed.css';
-
+import { Link } from 'react-router-dom';
 export default function Feed({loading, loaded_feed, profile_url}) {
 // const {profileImgLink} = useContext(context);
 
   const feeds = loaded_feed.map((feed)=>{
-    // console.log(feed.time.toDate().toDateString());
+   
       return (
         <div className='d-flex feed_wrapper mt-2' key={feed.id}>
 
@@ -16,9 +16,8 @@ export default function Feed({loading, loaded_feed, profile_url}) {
           
           <div>
             <div className='d-flex'>
-                <span className='username me-2'>{feed.username} </span><span className='username-sm'>
-                {feed.time?.toDate().toDateString()}
-                </span>
+                <Link to={`/${feed.emailAsid}`}><span className='username me-2'>{feed.username} </span></Link>
+                <span className='username-sm'>{feed.time?.toDate().toDateString()}</span>
             </div>
             
               <p className='feed'>{feed.tweet.feed}</p>
