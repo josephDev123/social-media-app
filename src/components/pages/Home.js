@@ -5,7 +5,7 @@ import Feed from '../Feed';
 import { useContext, useState, useEffect } from 'react';
 import { context } from '../Context/context';
 import { app } from '../firebase/firebaseApp';
-import {getFirestore, addDoc, collection, onSnapshot, serverTimestamp} from 'firebase/firestore';
+import {getFirestore, addDoc, collection, onSnapshot, getDoc, doc} from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 
@@ -29,7 +29,8 @@ export function Home() {
   const [imgPreview,setImgPreview] = useState('');
   const [uploadFile, setUploadFile] = useState('');
   const [imgProgress, setImgProgress] = useState(0);
-  // const [DownloadUrlLink, setDownloadUrlLink] = useState([]);
+  // this state handles the profile Image link from the profile collection in firebase
+  const [profile_img, setProfile_img] = useState('');
  
   //adding tweet function
   function handleTweetSubmit(e){
@@ -164,6 +165,21 @@ useEffect(()=>{
 }, []);
 
 
+// grap the profile of the current user
+useEffect(()=>{
+  // reference the firestore location for profile to grap the profile iamge
+const profileRef = doc(db, "profile", authValue.email);
+getDoc(profileRef)
+.then(result=>{
+  setProfile_img(result.data().profile_url);
+})
+.catch(e=>{
+  setProfile_img('');
+})
+
+}, []);
+
+
 // set the image and also set it preview
 function handleFileChange(e){
   setUploadFile(e.target.files[0]);
@@ -181,7 +197,7 @@ function handleFileChange(e){
 
     <form onSubmit={handleTweetSubmit}>
           <div className="input-group form-group-sm">
-              <span className="input-group-text"><img src={profileImgLink?profileImgLink: 'asset/avatar/avatar.jpg'} alt='profile image' className='img-fluid rounded-circle img-thumbnail' width='50px' height='50px'></img></span>
+              <span className="input-group-text"><img src={profile_img?profile_img: 'asset/avatar/avatar.jpg'} alt='profile_image' className='img-fluid rounded-circle img-thumbnail' width='50px' height='50px'></img></span>
               <textarea className="form-control tweet_box" width='20px' height='20px' placeholder="What is Happening?" value={tweet} onChange={(e)=>setTweet(e.target.value)}></textarea>
           </div>
             
@@ -217,7 +233,7 @@ function handleFileChange(e){
       </form>
       <hr/>
         {/* feed component */}
-        <Feed loading={loadingTweet} loaded_feed={extracTweet}/>
+        <Feed loading={loadingTweet} loaded_feed={extracTweet} profile_url={profile_img} />
 
     </div>
   );

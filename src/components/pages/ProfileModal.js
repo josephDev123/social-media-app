@@ -9,7 +9,7 @@ import app from '../firebase/firebaseApp';
 
 export default function ProfileModal({currentAuthPerson}) {
   // use context to get email
-  const {authValue ,grapProfileImageFromdownloadURL } = useContext(context);
+  const {authValue } = useContext(context);
   const db = getFirestore();
 
 const [name, setName] = useState('');
@@ -103,7 +103,7 @@ function handleEditProfile(e){
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
       
         setUploadImg_url(downloadURL);
-        grapProfileImageFromdownloadURL(downloadURL)
+        // grapProfileImageFromdownloadURL(downloadURL)
       // edit profile with data
       const docRef = doc(collectionRef, authValue.email )
       setDoc(docRef, {

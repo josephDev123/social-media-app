@@ -3,12 +3,11 @@ import '../css/profile.css';
 import { useContext, useState, useEffect } from 'react';
 import { context } from '../Context/context';
 import ProfileModal from './ProfileModal';
-import { Link } from 'react-router-dom';
-import {setDoc, getFirestore, doc, collection, onSnapshot} from 'firebase/firestore';
+import { getFirestore, doc, collection, onSnapshot} from 'firebase/firestore';
 
 
 export default function Profile() {
-  const {authValue, grapProfileImageFromdownloadURL}  = useContext(context);
+  const {authValue}  = useContext(context);
   //state
   const [profile, setProfile] =useState('');
   // firebase storage
@@ -19,27 +18,26 @@ export default function Profile() {
   const username = email.substring(0, stringIndex);
 
   // getting the profile data from firebase firestore in profile collection
-
 useEffect(()=>{
   let isCancelled = false;
   onSnapshot(doc(collection(db,"profile"), authValue.email), (snapShot =>{
     if(!isCancelled){
       setProfile(snapShot.data());
-      grapProfileImageFromdownloadURL(snapShot.data().profile_url)
+      // grapProfileImageFromdownloadURL(snapShot.data().profile_url);
     }
   }));
 
 return ()=>{
   isCancelled = true
 }
-}, []);
+}, [profile]);
 
   return (
       <div style={{ margin: '0 auto', width: '100%' }}>
         <div className='profile_header'>
          {/* //profile image */}
           <div className='profile_img_container'>
-              <img className='img-fluid rounded-circle img-thumbnail profile_img' src={profile ?profile.profile_url:'asset/avatar/avatar.jpg'} alt='' width='100px' height='100px'/>    
+              <img className='img-fluid rounded-circle img-thumbnail profile_img' src={profile ?profile.profile_url:'asset/avatar/avatar.jpg'} alt='' width='100px' height='100px'/>   
           </div>
         </div>
 

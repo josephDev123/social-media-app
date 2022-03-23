@@ -52,9 +52,9 @@ export function SetContext({children}){
     }
 
     // grab the profile image once the person update it profile
-    const grapProfileImageFromdownloadURL = (profileImgLink)=>{
-        setProfileImgLink(profileImgLink);
-    }
+    // const grapProfileImageFromdownloadURL = (profileImgLink)=>{
+    //     setProfileImgLink(profileImgLink);
+    // }
  
     // console.log(state);
 
@@ -70,7 +70,7 @@ export function SetContext({children}){
     }
 
     return (
-        <context.Provider value={{ authValue, currentUserEmail, state, dispatch, profileImgLink, grapProfileImageFromdownloadURL }}>
+        <context.Provider value={{ authValue, currentUserEmail, state, dispatch, profileImgLink }}>
             {children}
         </context.Provider>
     )

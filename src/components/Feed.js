@@ -2,8 +2,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import { context } from './Context/context';
 import './css/feed.css';
 
-export default function Feed({loading, loaded_feed}) {
-const {profileImgLink} = useContext(context);
+export default function Feed({loading, loaded_feed, profile_url}) {
+// const {profileImgLink} = useContext(context);
 
   const feeds = loaded_feed.map((feed)=>{
     // console.log(feed.time.toDate().toDateString());
@@ -11,7 +11,7 @@ const {profileImgLink} = useContext(context);
         <div className='d-flex feed_wrapper mt-2' key={feed.id}>
 
           <div className='me-3'>
-            <img src={profileImgLink?profileImgLink:'asset/avatar/avatar.jpg'} alt='' className='img-fluid rounded-circle img-thumbnail' width='50px' height='50px' />
+            <img src={profile_url?profile_url:'asset/avatar/avatar.jpg'} alt='profile_image' className='img-fluid rounded-circle img-thumbnail' width='100px' height='100px' />
           </div>
           
           <div>
