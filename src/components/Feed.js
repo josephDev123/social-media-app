@@ -16,7 +16,7 @@ export default function Feed({loading, loaded_feed, profile_url}) {
           
           <div>
             <div className='d-flex'>
-                <Link to={`/${feed.emailAsid}`}><span className='username me-2'>{feed.username} </span></Link>
+                <Link to={`/profile/${feed.emailAsid}`}><span className='username me-2'>{feed.username} </span></Link>
                 <span className='username-sm'>{feed.time?.toDate().toDateString()}</span>
             </div>
             

@@ -28,7 +28,7 @@ function App() {
                     <Route path='notification' element= {<Notification/>}/>
                     <Route path='list' element= {<List/>}/>
                     <Route path='profile' element= {<Profile/>}/>
-                    <Route path='/:id' element= {<UsersProfile/>}/>
+                    <Route path='profile/:id' element= {<UsersProfile/>}/>
                     <Route path='bookmark' element= {<Bookmark/>}/>
                     <Route path='message' element= {<Message/>}/>
                     <Route path='home' element= {<Home/>}/>

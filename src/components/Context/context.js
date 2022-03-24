@@ -21,9 +21,8 @@ export function SetContext({children}){
 // state
     const [authValue, setAuthValue] = useState('');
     const [pending, setPending] = useState(true);
-    const [profileImgLink, setProfileImgLink] = useState('');
+    // const [profileImgLink, setProfileImgLink] = useState('');
 
-    console.log(profileImgLink);
 
     useEffect(()=>{
         onAuthStateChanged(auth, (authSnapShot)=>{
@@ -70,7 +69,7 @@ export function SetContext({children}){
     }
 
     return (
-        <context.Provider value={{ authValue, currentUserEmail, state, dispatch, profileImgLink }}>
+        <context.Provider value={{ authValue, currentUserEmail, state, dispatch }}>
             {children}
         </context.Provider>
     )
