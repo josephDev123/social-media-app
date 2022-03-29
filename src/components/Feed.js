@@ -2,8 +2,23 @@ import React, { useEffect, useState, useContext } from 'react';
 import { context } from './Context/context';
 import './css/feed.css';
 import { Link } from 'react-router-dom';
+import { increment, getFirestore, updateDoc, doc } from 'firebase/firestore';
+
+
 export default function Feed({loading, loaded_feed, profile_url}) {
 // const {profileImgLink} = useContext(context);
+// firebase firestore database
+const db = getFirestore();
+
+
+const handleClickLike= (id)=>{
+  const  docRef = doc(db, 'feeds', id);
+  updateDoc(docRef, {
+    like:increment(1)
+  })
+  .then(res=> console.log('like'))
+  .catch(err=> console.log(err.message))
+}
 
   const feeds = loaded_feed.map((feed)=>{
    
@@ -25,9 +40,13 @@ export default function Feed({loading, loaded_feed, profile_url}) {
    
               {/* media space */}
               <div className='feed_media mt-3'>
-               {feed.tweet_img &&  <img src={feed.tweet_img} alt={feed.tweet_img} width='180px' height='100px'/>}
+                {feed.tweet_img &&  <img src={feed.tweet_img} alt={feed.tweet_img} width='180px' height='100px'/>}
               </div>
-          </div>
+              
+              <div className='like_warpper mt-3'>
+                 <i class="far fa-heart me-2 text-danger" onClick={()=>handleClickLike(feed.id)}>{' '} {feed.like}</i> 
+              </div>
+         </div>
       </div>
       )
     })

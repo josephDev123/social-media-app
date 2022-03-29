@@ -28,4 +28,11 @@
    font-size: small;
 }
 
+.like_warpper .fa-heart:hover{
+    cursor: pointer;
+}
 
+
+.like_warpper .fa-heart:hover .like_warpper .fa-heart{
+    box-shadow: rgb(202, 197, 197);
+}

@@ -4,7 +4,7 @@ import '../css/home_page.css';
 import Feed from '../Feed';
 import { useContext, useState, useEffect } from 'react';
 import { context } from '../Context/context';
-import { app } from '../firebase/firebaseApp';
+// import { app } from '../firebase/firebaseApp';
 import {getFirestore, addDoc, collection, onSnapshot, getDoc, doc} from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
@@ -15,7 +15,7 @@ export function Home() {
   //firebase database
   const db = getFirestore();
   // console.log(new Date().toDateString());
-  const {authValue, profileImgLink} =  useContext(context);
+  const {authValue} =  useContext(context);
  
   const uidEmail = authValue.email;
  
@@ -48,6 +48,7 @@ export function Home() {
           tweet:{feed:tweet, url:tweetUrl},
           tweet_img: '',
           time: new Date(),
+          like:0
           // personWhoPostedItImg:profileImgLink
         }).then(snapshot=>
           console.log(snapshot.id)
@@ -119,6 +120,7 @@ export function Home() {
               tweet:{feed:tweet, url:tweetUrl},
               tweet_img: downloadURL,
               time: new Date(),
+              like:0
               // personWhoPostedItImg:profileImgLink
             }).then(snapshot=>
               console.log(snapshot.id)
@@ -162,12 +164,12 @@ useEffect(()=>{
     isCancelled=true;
   }
 
-}, []);
+}, [db]);
 
 
 // grap the profile of the current user
 useEffect(()=>{
-  // reference the firestore location for profile to grap the profile iamge
+  // reference the firestore location for profile to grap the profile image
 const profileRef = doc(db, "profile", authValue.email);
 getDoc(profileRef)
 .then(result=>{
@@ -177,7 +179,7 @@ getDoc(profileRef)
   setProfile_img('');
 })
 
-}, []);
+}, [authValue.email, db]);
 
 
 // set the image and also set it preview
