@@ -9,7 +9,8 @@ import { getFirestore, doc, collection, onSnapshot} from 'firebase/firestore';
 export default function Profile() {
   const {authValue}  = useContext(context);
   //state
-  const [profile, setProfile] =useState('');
+  const [profile, setProfile] =useState('loading');
+  const [status, setStatus] =useState('');
   // firebase storage
   const db = getFirestore();
   // extracting username from user email
@@ -22,6 +23,7 @@ useEffect(()=>{
   let isCancelled = false;
   onSnapshot(doc(collection(db,"profile"), authValue.email), (snapShot =>{
     if(!isCancelled){
+      setStatus('loaded');
       setProfile(snapShot.data());
       // grapProfileImageFromdownloadURL(snapShot.data().profile_url);
     }
@@ -32,6 +34,14 @@ return ()=>{
 }
 }, [profile]);
 
+  if(status === 'loading'){
+    return (
+      <div className="d-flex align-items-center text-primary">
+        <strong>Loading...</strong>
+        <div className="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+      </div>
+    )
+  }
   return (
       <div style={{ margin: '0 auto', width: '100%' }}>
         <div className='profile_header'>
