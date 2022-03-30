@@ -39,6 +39,8 @@ function handleEditProfile(e){
        'location':location,
        'website':website,
        'birth_day':birth,
+       'follows':false,
+       'follow_by_user':[]
       //  'profile_url':downloadURL,
    
      }, {merge:true}).then(snapShot=>{
@@ -113,6 +115,8 @@ function handleEditProfile(e){
         'website':website,
         'birth_day':birth,
         'profile_url':downloadURL,
+        'follows':false,
+        'follow_by_user':[]
     
       }).then(snapShot=>{
         setName('');

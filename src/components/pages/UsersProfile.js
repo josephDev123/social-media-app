@@ -3,7 +3,7 @@ import '../css/profile.css';
 import { useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { context } from '../Context/context';
-import {getFirestore, getDoc, doc} from 'firebase/firestore';
+import {getFirestore, getDoc, doc, updateDoc, onSnapshot, arrayUnion} from 'firebase/firestore';
 
 
 export default function UsersProfile() {
@@ -12,7 +12,7 @@ export default function UsersProfile() {
     const [profile, setProfile] =useState('');
 
     const db = getFirestore()
-    // let {authValue} = useContext(context);
+    let {authValue} = useContext(context);
     let {id} = useParams();
     let index = id.indexOf('@');
     let username = id.substr(0, index);
@@ -22,16 +22,36 @@ export default function UsersProfile() {
         // fetch profile details base by id(gotten from the route query (useParam))  
     // 1. reference the location of the profile details
         const uniqueprofileDetailsRef =  doc(db, 'profile', id);
+        onSnapshot(uniqueprofileDetailsRef, (result)=>{
+            setProfile(result.data());
+             setStatus('loaded');
+        },(error) => {
+            setProfile('');
+            setStatus('error');
+          })
+  
+    }, [id, db]);
+
+
+    //handle when user click the follow button
+    const handleClickFollowers = ()=>{
+        // 1. reference the location of the profile details
+        const uniqueprofileDetailsRef =  doc(db, 'profile', id);
+
         getDoc(uniqueprofileDetailsRef)
         .then(result=>{
-            setProfile(result.data());
-            setStatus('loaded');
-        })
-       .catch(e=>{
-        setProfile('');
-        setStatus('error');
-       })
-    }, [id, db]);
+            // firstly, we have to know the status of 'follows' property in profile collection in firestore
+          const follow_state = result.data().follows;
+          console.log(follow_state);
+          //update the follow property in firestore
+            updateDoc(uniqueprofileDetailsRef, {
+                'follows':!follow_state,
+                'follow_by_user':arrayUnion(id)
+            }).then(res=>console.log('follows')).catch(e=>console.log(e.message))
+        
+        }).catch(e=>console.log(e.message))
+       
+    }
 
 
     
@@ -55,14 +75,13 @@ export default function UsersProfile() {
 
                         <div className='d-flex justify-content-end mt-4'>
                                 {/* Button trigger modal  */}
-                        <button className='edit_btn' type='button'>Following</button>
+                        <button className='edit_btn' type='button' onClick={handleClickFollowers}>Following</button>
                         </div>
                     
                         <div className='profile_username_container'>
                             <p className='lh-1'>Username: {username}</p>
                         </div>
 
-                        
                         <div className='profile_email_container'>
                              <p>Email: {id} </p>     
                         </div>
@@ -80,10 +99,10 @@ export default function UsersProfile() {
 
                         <div className='d-flex justify-content-end mt-4'>
                                 {/* Button trigger modal  */}
-                        <button className='edit_btn' type='button'>Following</button>
+                        <button className='edit_btn' type='button' onClick={handleClickFollowers}>{profile.follows===true?'Following':'Follows'}</button>
                         </div>
 
-                    
+                        {/* profile.follows===true && profile.follow_by_user ===authValue.email? */}
                         <div className='profile_username_container'>
                         <h6 className='fw-bold mt-4'>Name: {profile.name}</h6>
                         <p className='lh-1'>Username: {username}</p>

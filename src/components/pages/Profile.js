@@ -9,8 +9,8 @@ import { getFirestore, doc, collection, onSnapshot} from 'firebase/firestore';
 export default function Profile() {
   const {authValue}  = useContext(context);
   //state
-  const [profile, setProfile] =useState('loading');
-  const [status, setStatus] =useState('');
+  const [profile, setProfile] =useState('');
+  const [status, setStatus] =useState('loading');
   // firebase storage
   const db = getFirestore();
   // extracting username from user email
