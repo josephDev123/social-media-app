@@ -126,7 +126,7 @@ export default function UsersProfile() {
                         </div>
 
                         <div className='profile_following_container d-flex justify-content-between'>
-                            <p className='profile_following'>Following</p> <p className='profile_followers'>Followers</p>
+                            <p className='profile_following'>Following: {profile.follow_by_user.length}</p> <p className='profile_followers'>Followers</p>
                         </div>
                     </div>
                 )

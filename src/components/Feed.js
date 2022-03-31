@@ -2,11 +2,11 @@ import React, { useEffect, useState, useContext } from 'react';
 import { context } from './Context/context';
 import './css/feed.css';
 import { Link } from 'react-router-dom';
-import { increment, getFirestore, updateDoc, doc } from 'firebase/firestore';
+import { increment, getFirestore, updateDoc, doc, getDoc, collection, addDoc } from 'firebase/firestore';
 
 
 export default function Feed({loading, loaded_feed, profile_url}) {
-// const {profileImgLink} = useContext(context);
+const {authValue} = useContext(context);
 // firebase firestore database
 const db = getFirestore();
 
@@ -18,6 +18,23 @@ const handleClickLike= (id)=>{
   })
   .then(res=> console.log('like'))
   .catch(err=> console.log(err.message))
+}
+
+const handleClickBookmark=(id)=>{
+  const  docRef = doc(db, 'feeds', id);
+  const bookmarkCollection = collection(db, 'bookmark');
+  getDoc(docRef).then(res=>{
+    const dataToBeBookmarked = res.data();
+      addDoc(bookmarkCollection, {
+        "bookmark_by":authValue.email,
+        'bookmark':dataToBeBookmarked
+      }).then(res=>{
+        console.log(res);
+      }).catch(e=>console.log(e.code))
+
+  }).catch(e=>{
+    console.log(e.message);
+  })
 }
 
   const feeds = loaded_feed.map((feed)=>{
@@ -44,7 +61,8 @@ const handleClickLike= (id)=>{
               </div>
               
               <div className='like_warpper mt-3'>
-                 <i class="far fa-heart me-2 text-danger" onClick={()=>handleClickLike(feed.id)}>{' '} {feed.like}</i> 
+                 <i className="far fa-heart me-2 text-danger" onClick={()=>handleClickLike(feed.id)}>{' '} {feed.like}</i> 
+                 <i className="far fa-bookmark" style={{ cursor:'pointer' }} onClick={()=>handleClickBookmark(feed.id)}></i>
               </div>
          </div>
       </div>
