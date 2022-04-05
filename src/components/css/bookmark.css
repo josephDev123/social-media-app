@@ -1,0 +1,9 @@
+.bookmark_wrapper{
+    background-color: none;
+}
+
+.bookmark_wrapper:hover{
+    background: rgb(219, 226, 232);
+    transition: background 0.2s linear;
+}
+
