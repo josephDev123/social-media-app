@@ -1,9 +1,8 @@
 import { createContext } from "react";
 import {useReducer, useState, useEffect} from 'react';
 import {reducer} from '../Reducer/reducer';
-import {app} from '../firebase/firebaseApp';
-import { onAuthStateChanged, getAuth } from "firebase/auth";
-// import { Navigate } from "react-router-dom";
+import { onAuthStateChanged, getAuth, signOut } from "firebase/auth";
+ import { Navigate } from "react-router-dom";
 import { type } from "../Type/reducerType";
 
 // create context
@@ -11,7 +10,7 @@ export const context = createContext();
 
 export function SetContext({children}){
     const auth = getAuth();
-
+// let navigate = useNavigate();
     //reducer state
     const initialState = [];
     const[state, dispatch] = useReducer(reducer, initialState);
@@ -21,12 +20,11 @@ export function SetContext({children}){
 // state
     const [authValue, setAuthValue] = useState('');
     const [pending, setPending] = useState(true);
-    // const [profileImgLink, setProfileImgLink] = useState('');
-
+console.log(authValue);
 
     useEffect(()=>{
         onAuthStateChanged(auth, (authSnapShot)=>{
-            if(authSnapShot.uid){
+            if(authSnapShot?.uid){
                 // console.log(authSnapShot.uid);
                  //current auth user
                 setAuthValue(authSnapShot);
@@ -50,12 +48,19 @@ export function SetContext({children}){
         setPending(false);
     }
 
-    // grab the profile image once the person update it profile
-    // const grapProfileImageFromdownloadURL = (profileImgLink)=>{
-    //     setProfileImgLink(profileImgLink);
-    // }
- 
-    // console.log(state);
+    //logout
+    const Logout = ()=>{
+        
+        signOut(auth).then(() => {
+            console.log("Sign-out successful"); 
+            setAuthValue(null)
+            setPending(false);
+            <Navigate to='/login' />
+          }).catch((error) => {
+            console.log("An error happened."); 
+          });
+    }
+        
 
     // if there is a refresh, loading Jxs is showed for UX
     if(pending){
@@ -69,7 +74,7 @@ export function SetContext({children}){
     }
 
     return (
-        <context.Provider value={{ authValue, currentUserEmail, state, dispatch }}>
+        <context.Provider value={{ authValue, currentUserEmail, state, dispatch , Logout}}>
             {children}
         </context.Provider>
     )
