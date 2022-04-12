@@ -18,7 +18,7 @@ export function Home() {
   const {authValue} =  useContext(context);
  
   const uidEmail = authValue.email;
- 
+ console.log(uidEmail);
   const index = uidEmail.indexOf('@');
   const username = uidEmail.substr(0, index);
 
@@ -167,7 +167,7 @@ useEffect(()=>{
 }, [db]);
 
 
-// grap the profile of the current user
+// grap the profile image of the current user
 useEffect(()=>{
   // reference the firestore location for profile to grap the profile image
 const profileRef = doc(db, "profile", authValue.email);

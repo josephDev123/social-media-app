@@ -1,15 +1,16 @@
 :root {
     --twitter-color: #1D9BF0;
   }
+  
 
 .logo{
-    padding-left: 15px;
-    font-size: 30px;
+    padding-left: 1em;
+    font-size: 2em;
     color: var(--twitter-color);
 }
 
 .fab{
-    padding: 10px;
+    padding: 0.5em;
     border-radius: 50%;
 }
 
@@ -29,7 +30,7 @@
     display: flex;
     border: none ;
     cursor: pointer;
-    width: 10vw;
+    width: 10em;
     border-radius: 15px;
 }
 
@@ -49,4 +50,73 @@
 
 .custom_link{
     text-decoration: none;
+}
+
+.explore_link:hover{
+    cursor:not-allowed;
+}
+
+.explore_link{
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.notification_link:hover{
+   cursor:not-allowed;
+   pointer-events: none;
+}
+
+.notification_link{
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+
+.list_link:hover{
+    cursor:not-allowed;
+}
+
+.list_link{
+    pointer-events: none;
+    opacity: 0.5; 
+}
+
+.hamburger{
+    display: none;
+}
+
+@media only screen and (max-width:770px){
+
+    .sidebar{
+        display: flex;
+        justify-content: space-between;
+
+    }
+    .navigation{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width:100vw;
+        height: 100vh;
+        background-color: #d8e7f2;
+        position: fixed;
+        top: 0px;
+        bottom: 0px;
+        z-index: 2;
+    }
+
+    .navigation .list-group{
+        width: 25em;
+        /* background-color: green; */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .custom_link{
+        width: 3.5em; 
+        background-color: none;
+    }
 }

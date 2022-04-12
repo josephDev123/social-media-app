@@ -20,26 +20,34 @@ export function SetContext({children}){
 // state
     const [authValue, setAuthValue] = useState('');
     const [pending, setPending] = useState(true);
-console.log(authValue);
 
     useEffect(()=>{
+        let iscancelled = false;
         onAuthStateChanged(auth, (authSnapShot)=>{
             if(authSnapShot?.uid){
                 // console.log(authSnapShot.uid);
                  //current auth user
-                setAuthValue(authSnapShot);
+                 if(iscancelled ===false){
+                    setAuthValue(authSnapShot);
 
-                //extracting username from user email
-                const username_extract = authSnapShot.email;
-                const stringIndex = username_extract.indexOf('@');
-                const username = username_extract.substring(0, stringIndex);
+                    //extracting username from user email
+                    const username_extract = authSnapShot.email;
+                    const stringIndex = username_extract.indexOf('@');
+                    const username = username_extract.substring(0, stringIndex);
 
-                setPending(false);
-                dispatch({type:SET_EMAIL_USERNAME, email:authSnapShot.email, username:username});
+                    setPending(false);
+                    dispatch({type:SET_EMAIL_USERNAME, email:authSnapShot.email, username:username});
+                 }
+               
             }else{
                 setAuthValue(null);
                 setPending(false);
         }})
+
+        return ()=>{
+            iscancelled = true
+        }
+
     }, []);
     
  //current auth user
