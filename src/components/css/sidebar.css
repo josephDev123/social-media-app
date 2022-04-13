@@ -85,38 +85,32 @@
     display: none;
 }
 
+
+
+
 @media only screen and (max-width:770px){
 
     .sidebar{
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
     }
+
     .navigation{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width:100vw;
-        height: 100vh;
-        background-color: #d8e7f2;
-        position: fixed;
-        top: 0px;
-        bottom: 0px;
-        z-index: 2;
+        display: none;
     }
 
     .navigation .list-group{
-        width: 25em;
-        /* background-color: green; */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        /* display: none; */
     }
 
     .custom_link{
         width: 3.5em; 
         background-color: none;
+    }
+
+    .hamburger{
+        display: inline-block;
     }
 }

@@ -5,10 +5,11 @@ import CustomLink from '../router/Custom_link';
 // import { getAuth, signOut } from "firebase/auth";
 // import { useNavigate } from 'react-router-dom';
 import { context } from '../Context/context';
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 
 export default function Sidebar() {
-// const navigate =useNavigate();
+// const ref = useRef();
+const ref2 = useRef();
 //context
 let {Logout} = useContext(context);
 
@@ -16,6 +17,22 @@ let {Logout} = useContext(context);
   const handleLogoutClick = (e)=>{
     e.preventDefault();
     Logout();
+  }
+
+  const handleNavBarToggle = (e)=>{
+    console.log('hello');
+    let iSmall = true;
+    console.log(iSmall);
+    e.preventDefault()
+   if(window.innerWidth <= 770){
+     ref2.current.style.display='block'
+     iSmall = false
+   }else{
+    ref2.current.style.display='none'
+    iSmall =true
+   
+   }
+    
   }
   
 
@@ -26,7 +43,7 @@ let {Logout} = useContext(context);
         <div className='logo'>
           <i className="fab fa-twitter"></i>
         </div>
-        <div className='navigation'>
+        <div  ref ={ref2} className='navigation'>
             <div className="list-group">
                     
                 <CustomLink to='/home' className='custom_link'>
@@ -87,14 +104,14 @@ let {Logout} = useContext(context);
             </div>
         </div>
 
-        <CustomLink to='' className='custom_link hamburger' onClick ={handleLogoutClick}>
+        <CustomLink to='' className='custom_link hamburger' onClick ={handleNavBarToggle}>
               <label className="list-group-item">
               <i className="fas fa-light fa-bars"></i>
              
               </label>
         </CustomLink>
-        <br/>
-        <button className='tweet_button'>Tweet</button>
+      
+        {/* <button className='tweet_button'>Tweet</button> */}
         <ProfileSnapShot/>
     </div>
   );
