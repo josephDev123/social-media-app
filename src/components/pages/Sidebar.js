@@ -3,12 +3,15 @@ import '../css/sidebar.css';
 import ProfileSnapShot from '../ProfileSnapShot'; 
 import CustomLink from '../router/Custom_link';
 // import { getAuth, signOut } from "firebase/auth";
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { context } from '../Context/context';
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 
 export default function Sidebar() {
-// const ref = useRef();
+  //states
+  const [iSmall, setIsMall] = useState(true);
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+const ref = useRef();
 const ref2 = useRef();
 //context
 let {Logout} = useContext(context);
@@ -19,18 +22,35 @@ let {Logout} = useContext(context);
     Logout();
   }
 
+  console.log(viewportWidth);
+
+  //MONITOR VIEWPORT SIZE
+  window.addEventListener('resize', ()=>{
+    setViewportWidth(window.innerWidth)
+  }) 
+
+//handle the display when on small screen
   const handleNavBarToggle = (e)=>{
-    console.log('hello');
-    let iSmall = true;
     console.log(iSmall);
     e.preventDefault()
-   if(window.innerWidth <= 770){
-     ref2.current.style.display='block'
-     iSmall = false
-   }else{
-    ref2.current.style.display='none'
-    iSmall =true
+   if(viewportWidth <= 770 && iSmall){
+     ref.current.style.display='block';
+     ref2.current.style.cssText =`
+      position: absolute;
+      top:0px;
+      left: 0px;
+      width:20vw;
+      height: 100vh;
+      z-index: 2;
+     `;
+    setIsMall(!iSmall)
+   }else if(viewportWidth <= 770 && iSmall===false){
+    ref.current.style.display='none'
+    setIsMall(!iSmall)
    
+   }else{
+    // ref.current.style.display='block';
+  return Navigate('/')
    }
     
   }
@@ -43,8 +63,8 @@ let {Logout} = useContext(context);
         <div className='logo'>
           <i className="fab fa-twitter"></i>
         </div>
-        <div  ref ={ref2} className='navigation'>
-            <div className="list-group">
+        <div ref ={ref} className='navigation'>
+            <div ref ={ref2} className="list-group">
                     
                 <CustomLink to='/home' className='custom_link'>
                     <label className="list-group-item">
