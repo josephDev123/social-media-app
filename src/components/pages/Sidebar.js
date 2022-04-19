@@ -3,13 +3,14 @@ import '../css/sidebar.css';
 import ProfileSnapShot from '../ProfileSnapShot'; 
 import CustomLink from '../router/Custom_link';
 // import { getAuth, signOut } from "firebase/auth";
-import { useNavigate, Navigate } from 'react-router-dom';
+// import { useNavigate, Navigate } from 'react-router-dom';
 import { context } from '../Context/context';
 import { useContext, useRef, useState } from 'react';
 
 export default function Sidebar() {
   //states
-  const [iSmall, setIsMall] = useState(true);
+  // const [iSmall, setIsMall] = useState(true);
+  // const [screenSize, setScreenSize] = useState('largeScreen');
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 const ref = useRef();
 const ref2 = useRef();
@@ -31,34 +32,13 @@ let {Logout} = useContext(context);
 
 //handle the display when on small screen
   const handleNavBarToggle = (e)=>{
-    console.log(iSmall);
     e.preventDefault()
-   if(viewportWidth <= 770 && iSmall){
-     ref.current.style.display='block';
-     ref2.current.style.cssText =`
-      position: absolute;
-      top:0px;
-      left: 0px;
-      width:20vw;
-      height: 100vh;
-      z-index: 2;
-     `;
-    setIsMall(!iSmall)
-   }else if(viewportWidth <= 770 && iSmall===false){
-    ref.current.style.display='none'
-    setIsMall(!iSmall)
-   
-   }else{
-    // ref.current.style.display='block';
-  return Navigate('/')
-   }
     
   }
   
 
 
   return (
-  
     <div className='sidebar'>
         <div className='logo'>
           <i className="fab fa-twitter"></i>
@@ -123,16 +103,18 @@ let {Logout} = useContext(context);
                 </CustomLink>
             </div>
         </div>
-
+{/* 
         <CustomLink to='' className='custom_link hamburger' onClick ={handleNavBarToggle}>
               <label className="list-group-item">
               <i className="fas fa-light fa-bars"></i>
              
               </label>
-        </CustomLink>
+        </CustomLink> */}
+       
       
         {/* <button className='tweet_button'>Tweet</button> */}
         <ProfileSnapShot/>
     </div>
+    
   );
 }

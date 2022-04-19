@@ -94,16 +94,25 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative;
 
     }
 
     .navigation{
-        display: none;
-    }
+        /* display: none; */
+       
 
-    .navigation .list-group{
-      
+    } 
 
+    .list-group{
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        top:4em;
+        left: 0.5em;
+        /* width:20vw; */
+        /* height: 100vh;  */
+        z-index: 2; 
     }
 
     .custom_link{
@@ -114,4 +123,23 @@
     .hamburger{
         display: inline-block;
     }
+
+    .fas:nth-child(1) {
+        display: none;
+       
+    }
+
+    .far:nth-child(1) {
+        display: none; 
+    }
+
+    .list-group-item{
+        display: flex;
+        padding: 1em;
+        width: calc(0.5em + 8vw);
+        border-radius: 15px;
+        font-size: 0.5em;
+    }
 }
+
+
