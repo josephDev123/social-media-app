@@ -98,12 +98,6 @@
 
     }
 
-    .navigation{
-        /* display: none; */
-       
-
-    } 
-
     .list-group{
         display: flex;
         flex-direction: row;

@@ -11,11 +11,11 @@ export default function Layout() {
           <Sidebar/>
         </div>
 
-        <div className='col-lg-4 col-sm-12 col-md-4'>
+        <div className='col-lg-4 col-sm-12 col-md-5'>
           <Outlet/>
         </div>
 
-        <div className='col-lg-4 col-sm-12 col-md-4'>
+        <div className='col-lg-4 col-sm-12 col-md-3'>
           <TwitterEmbed/>
         </div>
       </div>
