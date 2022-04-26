@@ -23,8 +23,9 @@ export function SetContext({children}){
 
     useEffect(()=>{
         let iscancelled = false;
+        // check the current login user
         onAuthStateChanged(auth, (authSnapShot)=>{
-            if(authSnapShot?.uid){
+            if(authSnapShot){
                 // console.log(authSnapShot.uid);
                  //current auth user
                  if(iscancelled ===false){
@@ -53,12 +54,11 @@ export function SetContext({children}){
  //current auth user
     const currentUserEmail = (snapshot)=>{
         setAuthValue(snapshot);
-        setPending(false);
+        // setPending(false);
     }
 
     //logout
     const Logout = ()=>{
-        
         signOut(auth).then(() => {
             console.log("Sign-out successful"); 
             setAuthValue(null)

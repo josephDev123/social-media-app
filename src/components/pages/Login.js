@@ -29,8 +29,9 @@ export default function Login() {
             signInWithEmailAndPassword(auth, email, password).then(user_snapshot=>{
                 
                  if(user_snapshot){
-                    currentUserEmail(user_snapshot)
+                    currentUserEmail(user_snapshot.user)
                     const username_extract = user_snapshot.user.email;
+                    console.log(username_extract);
                     // const stringIndex = username_extract?.indexOf('@');
                     // const username = username_extract.substring(0, stringIndex);
 

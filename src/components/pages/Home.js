@@ -15,12 +15,8 @@ export function Home() {
   //firebase database
   const db = getFirestore();
   // console.log(new Date().toDateString());
+
   const {authValue} =  useContext(context);
- 
-  const uidEmail = authValue.email;
- console.log(uidEmail);
-  const index = uidEmail.indexOf('@');
-  const username = uidEmail.substr(0, index);
 
   const [tweet, setTweet] = useState('');
   const [tweetUrl,setTweetUrl] = useState('');
@@ -31,6 +27,12 @@ export function Home() {
   const [imgProgress, setImgProgress] = useState(0);
   // this state handles the profile Image link from the profile collection in firebase
   const [profile_img, setProfile_img] = useState('');
+
+
+  const uidEmail = authValue.email;
+ console.log(uidEmail);
+  const index = uidEmail?.indexOf('@');
+  const username = uidEmail?.substr(0, index);
  
   //adding tweet function
   function handleTweetSubmit(e){
