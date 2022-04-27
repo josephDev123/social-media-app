@@ -88,7 +88,7 @@
 
 
 
-@media only screen and (max-width:770px){
+@media only screen and (max-width:767px){
 
     .sidebar{
         display: flex;
@@ -97,6 +97,7 @@
         position: relative;
 
     }
+    
 
     .list-group{
         display: flex;
@@ -104,7 +105,7 @@
         position: absolute;
         top:4em;
         left: 0.5em;
-        /* width:20vw; */
+        /* width:100vw; */
         /* height: 100vh;  */
         z-index: 2; 
     }
