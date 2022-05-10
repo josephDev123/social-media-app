@@ -1,0 +1,6 @@
+.notfound_container{
+    background-image: url('/public/asset/404/meme_1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
