@@ -30,7 +30,6 @@ export function Home() {
 
 
   const uidEmail = authValue.email;
- console.log(uidEmail);
   const index = uidEmail?.indexOf('@');
   const username = uidEmail?.substr(0, index);
  

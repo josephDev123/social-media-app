@@ -13,6 +13,7 @@ import Register from './components/pages/Register';
 import {SetContext} from './components/Context/context';
 import AuthStatus from './components/pages/AuthStatus';
 import UsersProfile from './components/pages/UsersProfile';
+import NotFound  from './components/pages/404';
 
 
 
@@ -35,6 +36,7 @@ function App() {
                   </Route>
                   <Route path='login' element= {<Login/>}/>
                   <Route path='register' element= {<Register/>}/>
+                  <Route path='*' element= {<NotFound/>}/>
                 </Routes>
             </div>
       </BrowserRouter> 

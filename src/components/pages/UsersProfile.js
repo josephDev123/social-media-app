@@ -17,16 +17,22 @@ export default function UsersProfile() {
     let index = id.indexOf('@');
     let username = id.substr(0, index);
 
-    
+    console.log(profile);
     useEffect(()=>{
         // fetch profile details base by id(gotten from the route query (useParam))  
     // 1. reference the location of the profile details
         const uniqueprofileDetailsRef =  doc(db, 'profile', id);
         onSnapshot(uniqueprofileDetailsRef, (result)=>{
-            setProfile(result.data());
-             setStatus('loaded');
+            if(result.data()){
+                setProfile(result.data());
+                setStatus('loaded');
+            }else{
+                setProfile(null);
+                setStatus('noProfileYet');
+            }
+            
         },(error) => {
-            setProfile('');
+            setProfile(null);
             setStatus('error');
           })
   
@@ -62,6 +68,14 @@ export default function UsersProfile() {
                         <span className="visually-hidden">Loading...</span>
                     </div> 
                 )
+
+            case 'noProfileYet':
+                return (
+                    <div className="alert alert-info mt-5" role="alert">
+                        No profile details yet. try to create one in the profile page
+                    </div> 
+                )
+
             case 'error':
                 return(
                     <div>
