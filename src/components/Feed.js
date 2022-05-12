@@ -43,7 +43,7 @@ const handleClickBookmark=(id)=>{
         <div className='d-flex feed_wrapper mt-2' key={feed.id}>
 
           <div className='me-2 ms-0'>
-            <img src={profile_url?profile_url:'asset/avatar/avatar.jpg'} alt='profile_image' className='img-fluid rounded-circle img-thumbnail profile_image' width='100px' height='100px'/>
+            <img src={feed.person_who_tweeted_img} alt='profile_image' className='img-fluid rounded-circle img-thumbnail profile_image' width='100px' height='100px'/>
           </div>
           <div>
             <div className='d-flex'>
@@ -51,7 +51,7 @@ const handleClickBookmark=(id)=>{
                 <span className='username-sm'>{feed.time?.toDate().toDateString()}</span>
             </div>
             
-              <p className='feed'>{feed.tweet.feed}</p>
+              <p className='feed'>{feed.tweet.content}</p>
               <a href={feed.tweet.url} className='feed_url' target='_blank'>{feed.tweet.url}</a>
    
               {/* media space */}

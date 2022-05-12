@@ -23,7 +23,6 @@ let {Logout} = useContext(context);
     Logout();
   }
 
-  console.log(viewportWidth);
 
   //MONITOR VIEWPORT SIZE
   window.addEventListener('resize', ()=>{

@@ -18,6 +18,7 @@ export function Home() {
 
   const {authValue} =  useContext(context);
 
+
   const [tweet, setTweet] = useState('');
   const [tweetUrl,setTweetUrl] = useState('');
   const [extracTweet,getTweet] = useState([]);
@@ -32,6 +33,8 @@ export function Home() {
   const uidEmail = authValue.email;
   const index = uidEmail?.indexOf('@');
   const username = uidEmail?.substr(0, index);
+
+
  
   //adding tweet function
   function handleTweetSubmit(e){
@@ -46,9 +49,10 @@ export function Home() {
           // uid:uuidv4(),
           username:username,
           emailAsid:uidEmail,
-          tweet:{feed:tweet, url:tweetUrl},
+          tweet:{content:tweet, url:tweetUrl},
           tweet_img: '',
           time: new Date(),
+          person_who_tweeted_img:profile_img,
           like:0
           // personWhoPostedItImg:profileImgLink
         }).then(snapshot=>
@@ -118,9 +122,10 @@ export function Home() {
               // uid:uuidv4(),
               username:username,
               emailAsid:uidEmail,
-              tweet:{feed:tweet, url:tweetUrl},
+              tweet:{content:tweet, url:tweetUrl},
               tweet_img: downloadURL,
               time: new Date(),
+              person_who_tweeted_img:profile_img,
               like:0
               // personWhoPostedItImg:profileImgLink
             }).then(snapshot=>
@@ -172,15 +177,15 @@ useEffect(()=>{
 useEffect(()=>{
   // reference the firestore location for profile to grap the profile image
 const profileRef = doc(db, "profile", authValue.email);
-getDoc(profileRef)
-.then(result=>{
-  setProfile_img(result.data().profile_url);
-})
-.catch(e=>{
-  setProfile_img('');
+getDoc(profileRef).then(result=>{
+  result?setProfile_img(result.data().profile_url):setProfile_img('asset/avatar/avatar.jpg');
+}).catch(e=>{
+  setProfile_img(e.message);
 })
 
 }, [authValue.email, db]);
+
+
 
 
 // set the image and also set it preview
@@ -192,6 +197,8 @@ function handleFileChange(e){
     URL.revokeObjectURL(e.src);
   }
 }
+
+
 
 
   return (
