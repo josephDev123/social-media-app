@@ -25,9 +25,10 @@ const handleClickBookmark=(id)=>{
   const bookmarkCollection = collection(db, 'bookmark');
   getDoc(docRef).then(res=>{
     const dataToBeBookmarked = res.data();
+    console.log(dataToBeBookmarked);
       addDoc(bookmarkCollection, {
         "bookmark_by":authValue.email,
-        'bookmark':dataToBeBookmarked
+        'bookmarks':dataToBeBookmarked
       }).then(res=>{
         console.log(res);
       }).catch(e=>console.log(e.code))
