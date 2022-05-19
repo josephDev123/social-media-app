@@ -3,7 +3,7 @@ import '../css/message.css';
 
 export default function Message() {
   return (
-     <div>
+     <div className='container'>
         <h5 className='mt-2'>Messages</h5>
         <section className='search_wrapper row mb-2'>
           <input type='text' placeholder='Direct message' className='search p-2 m-2' />

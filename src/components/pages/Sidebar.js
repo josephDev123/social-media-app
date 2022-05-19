@@ -8,10 +8,6 @@ import { context } from '../Context/context';
 import { useContext, useRef, useState } from 'react';
 
 export default function Sidebar() {
-  //states
-  // const [iSmall, setIsMall] = useState(true);
-  // const [screenSize, setScreenSize] = useState('largeScreen');
-  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 const ref = useRef();
 const ref2 = useRef();
 //context
@@ -25,15 +21,15 @@ let {Logout} = useContext(context);
 
 
   //MONITOR VIEWPORT SIZE
-  window.addEventListener('resize', ()=>{
-    setViewportWidth(window.innerWidth)
-  }) 
+  // window.addEventListener('resize', ()=>{
+  //   setViewportWidth(window.innerWidth)
+  // }) 
 
 //handle the display when on small screen
-  const handleNavBarToggle = (e)=>{
-    e.preventDefault()
+  // const handleNavBarToggle = (e)=>{
+  //   e.preventDefault()
     
-  }
+  // }
   
 
 
