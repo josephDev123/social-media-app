@@ -2,7 +2,7 @@ import React from 'react';
 import '../css/bookmark.css'
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
-import {getFirestore, onSnapshot, query, collection, where, getDocs} from 'firebase/firestore';
+import {getFirestore, query, collection, where, getDocs} from 'firebase/firestore';
 import { context } from '../Context/context';
 
 export default function Bookmark() {
@@ -21,29 +21,29 @@ const q = query(bookmarkCollectionRef, where('bookmark_by', '==', authValue.emai
 
 
 useEffect(()=>{
-
-  let bookmarked  = [];
   getDocs(q).then(bookmarksItem=>{
+    let bookmarked  = [];
     bookmarksItem.forEach(bookmarkItem => {
       if(bookmarkItem.data() !== null || bookmarkItem.data() !== undefined){
         bookmarked.push(bookmarkItem.data());
         setStatus('loaded')
-      }else{
-        setStatus('empty')
-      }
-    
+       
+        }else{
+         setStatus('empty')
+        }
+     
     });
+    setBookmarked(bookmarked)
   }).catch(e=>{
     console.log(e.message)
     setStatus('error')
     setErrorType(e.message);
   })
-  setBookmarked(bookmarked)
+
   
 
 }, [])
 
-console.log(bookmarks);
 
     if(status === 'loading'){
       return (
@@ -71,11 +71,11 @@ console.log(bookmarks);
                 )
     }
 
-    if(status === 'loaded'){
+  
       return (
         <div className='d-flex flex-column bookmark_wrapper mt-2 border p-2'>
              {bookmarks.map(item=>(
-                         <React.Fragment key={item.id}>
+                         <div key={item.id} className='border border-bottom mb-2 p-2'>
                            <div className='me-3'>
                              <img src={item.bookmarks.person_who_tweeted_img?item.bookmarks.person_who_tweeted_img:'asset/avatar/avatar.jpg'} alt='profile_image' className='img-fluid rounded-circle img-thumbnail' width='100px' height='100px' />
                            </div>
@@ -87,7 +87,7 @@ console.log(bookmarks);
                                <span className='date-sm fs-6'>{item.bookmarks.time?.toDate().toDateString()}</span>
                            </div>
                            
-                             <p className='feed'>{item.bookmarks.tweet.feed}</p>
+                             <p className='feed'>{item.bookmarks.tweet.content}</p>
                              <Link to={item.bookmarks.tweet.url} className='feed_url' target='_blank'>{item.bookmarks.tweet.url} </Link>
                      
                              {/* media space */}
@@ -96,13 +96,13 @@ console.log(bookmarks);
                              </div>
          
                              <div className='like_warpper mt-3'>
-                               <i className="far fa-heart me-2 text-danger">{' '} {item.bookmarks.like}</i> 
+                               <i className="far fa-heart me-2 text-danger" >{' '} {item.bookmarks.like}</i> 
                              </div>
-                        </React.Fragment>   
+                        </div>   
              ))
                    }
          </div>
       )
-    }
+ 
 
 }
