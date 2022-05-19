@@ -75,9 +75,9 @@ useEffect(()=>{
       return (
         <div className='d-flex flex-column bookmark_wrapper mt-2 border p-2'>
              {bookmarks.map(item=>(
-                         <div key={item.id} className='border border-bottom mb-2 p-2'>
+                         <div key={item.id} className='mb-2 p-2'>
                            <div className='me-3'>
-                             <img src={item.bookmarks.person_who_tweeted_img?item.bookmarks.person_who_tweeted_img:'asset/avatar/avatar.jpg'} alt='profile_image' className='img-fluid rounded-circle img-thumbnail' width='100px' height='100px' />
+                             <img src={item.bookmarks.person_who_tweeted_img?item.bookmarks.person_who_tweeted_img:'asset/avatar/avatar.jpg'} alt='profile_image' className='img-fluid rounded-circle img-thumbnail' width='50px' height='100px' />
                            </div>
                            
                            
@@ -98,6 +98,7 @@ useEffect(()=>{
                              <div className='like_warpper mt-3'>
                                <i className="far fa-heart me-2 text-danger" >{' '} {item.bookmarks.like}</i> 
                              </div>
+                             <hr/>
                         </div>   
              ))
                    }
