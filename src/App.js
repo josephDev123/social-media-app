@@ -4,7 +4,6 @@ import {BrowserRouter, Routes,Route} from "react-router-dom";
 import {Home} from './components/pages/Home';
 import Explore from './components/pages/Explore';
 import Notification from './components/pages/Notification';
-import List from './components/pages/List';
 import Profile from './components/pages/Profile';
 import Bookmark from './components/pages/Bookmark';
 import Message from './components/pages/Message';
@@ -27,7 +26,6 @@ function App() {
                     <Route index element= {<Home/>}/>
                     <Route path='explore' element= {<Explore/>}/>
                     <Route path='notification' element= {<Notification/>}/>
-                    <Route path='list' element= {<List/>}/>
                     <Route path='profile' element= {<Profile/>}/>
                     <Route path='profile/:id' element= {<UsersProfile/>}/>
                     <Route path='bookmark' element= {<Bookmark/>}/>

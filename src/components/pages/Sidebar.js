@@ -79,13 +79,6 @@ let {Logout} = useContext(context);
                       Bookmarks
                     </label>
                 </CustomLink>
-
-                <CustomLink to='/list' className='custom_link list_link'>
-                    <label className="list-group-item ">
-                    <i className="far fa-list-alt"></i>
-                      List
-                    </label>
-                </CustomLink>
                     
                 <CustomLink to='/profile' className='custom_link'>
                     <label className="list-group-item">
