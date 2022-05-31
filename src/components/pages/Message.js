@@ -2,40 +2,48 @@ import React from 'react';
 import '../css/message.css';
 import { useState, useContext, useEffect } from 'react';
 import {context} from '../Context/context';
-import {collection, getDoc, getFirestore} from 'firebase/firestore';
+import {collection, getDoc, getFirestore, doc, setDoc} from 'firebase/firestore';
 
 export default function Message() {
 const [message, setMessage] = useState('');
-const [messageReceiver, setMessageReceiver] = useState('');
+const [to, setTo] = useState('');
 const [isemailvalidateError, setIsEmailvalidateError] = useState('');
-const [isEmpty, setIsEmpty] =useState('');
+const [isEmpty, setIsEmpty] = useState('');
 
 const {authValue} = useContext(context);
 
 const db = getFirestore();
-console.log(isEmpty, isemailvalidateError, );
+// const profileRef = collection(db, 'profile');
+const profileRef = doc(db, 'profile', to);
+const DirectMessageCoillection = doc(db, 'directMessage', authValue.email);
 
-// validate the receiver
-const validateEmail = async ()=>{
-  try{
-    const profileRef = collection(db, 'profile', authValue.email);
-    const profile = await getDoc(profileRef);
-    const profileResult = console.log(profile.data());
-    console.log(profileResult);
-    return 
-  }catch(e){
-    setIsEmailvalidateError(e.message)
-  }
-}
 
 const handleSubmitMessage = (e)=>{
 
   e.preventDefault();
-  // if (message === '' && messageReceiver==='') {
-  //   setIsEmpty('The field cannot be empty');
-  // }else{
-    validateEmail()
-  // }
+  if (message === '' && to==='') {
+    setIsEmpty('The field cannot be empty');
+    console.log('empty');
+  }else{
+    let message;
+      getDoc(profileRef)
+      .then((result)=>{
+      if (result.data()) {
+        setDoc(DirectMessageCoillection, { 
+            sentBy: authValue.email,
+            to: to,
+            content:message
+          })
+            .then(addMessage=>{
+              console.log('message sent successfully');
+            })
+            .catch(e=>console.log(e.message))
+        
+      }
+      })
+      .catch(e=> console.log(e.message))
+  }
+
 }
 
 
@@ -47,7 +55,7 @@ const handleSubmitMessage = (e)=>{
           <section className='search_wrapper row mb-2'>
             <input type='text' placeholder='Direct message' className='search p-2 m-2' onChange={(e)=>setMessage(e.target.value)}/>
             <label htmlFor='reciever'>To</label>
-            <input type='email' placeholder='message reciever name(by email)' className='search p-2 m-2' id='reciever' onChange={(e)=>setMessageReceiver(e.target.value)}/>
+            <input type='email' placeholder='message reciever name(by email)' className='search p-2 m-2' id='reciever' onChange={(e)=>setTo(e.target.value)}/>
             <button type='submit' className='btn-primary p-2 m-2'>Message</button>
           </section>
         </form>
