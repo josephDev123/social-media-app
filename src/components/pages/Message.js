@@ -2,46 +2,47 @@ import React from 'react';
 import '../css/message.css';
 import { useState, useContext, useEffect } from 'react';
 import {context} from '../Context/context';
-import {collection, getDoc, getFirestore, doc, setDoc} from 'firebase/firestore';
+import {collection, getDoc, getFirestore, doc, setDoc, addDoc} from 'firebase/firestore';
 
 export default function Message() {
 const [message, setMessage] = useState('');
 const [to, setTo] = useState('');
-const [isemailvalidateError, setIsEmailvalidateError] = useState('');
-const [isEmpty, setIsEmpty] = useState('');
+const [isSuccess, setSuccess]= useState('');
+const [status, setStatus] = useState('')
 
 const {authValue} = useContext(context);
 
 const db = getFirestore();
-// const profileRef = collection(db, 'profile');
-const profileRef = doc(db, 'profile', to);
-const DirectMessageCoillection = doc(db, 'directMessage', authValue.email);
+
+const DirectMessageCoillection = collection(db, 'directMessage');
 
 
 const handleSubmitMessage = (e)=>{
 
   e.preventDefault();
   if (message === '' && to==='') {
-    setIsEmpty('The field cannot be empty');
-    console.log('empty');
+    setStatus('The field cannot be empty');
   }else{
-    let message;
+    const profileRef = doc(db, 'profile', to);
       getDoc(profileRef)
       .then((result)=>{
       if (result.data()) {
-        setDoc(DirectMessageCoillection, { 
+        addDoc(DirectMessageCoillection, { 
             sentBy: authValue.email,
             to: to,
             content:message
           })
             .then(addMessage=>{
-              console.log('message sent successfully');
+              setSuccess('message sent Successfully');
+              setStatus('');
             })
-            .catch(e=>console.log(e.message))
+            .catch(e=>setStatus(e.message))
         
+      }else{
+        setStatus('the email does not exist');
       }
       })
-      .catch(e=> console.log(e.message))
+      .catch(e=> setStatus(e.message))
   }
 
 }
@@ -51,6 +52,9 @@ const handleSubmitMessage = (e)=>{
   return (
      <div className='container'>
        <form onSubmit={handleSubmitMessage}>
+         {isSuccess ? <div className="alert alert-success" role="alert"> {isSuccess}</div>:''}
+         {status ? <div className="alert alert-danger" role="alert"> {status}</div>:''}
+
           <h5 className='mt-2'>Messages</h5>
           <section className='search_wrapper row mb-2'>
             <input type='text' placeholder='Direct message' className='search p-2 m-2' onChange={(e)=>setMessage(e.target.value)}/>
