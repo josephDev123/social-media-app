@@ -46,7 +46,6 @@ export function Home() {
       if(!uploadFile){
         //add data to it
         addDoc(docRef, {
-          // uid:uuidv4(),
           username:username,
           emailAsid:uidEmail,
           tweet:{content:tweet, url:tweetUrl},
@@ -89,8 +88,6 @@ export function Home() {
         }
       }, 
       (error) => {
-        // A full list of error codes is available at
-        // https://firebase.google.com/docs/storage/web/handle-errors
         switch (error.code) {
           case 'storage/unauthorized':
 

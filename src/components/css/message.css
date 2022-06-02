@@ -10,3 +10,16 @@
 .search:focus{
     border-color: rgb(131, 131, 191);
 }
+
+.message_wrapper{
+    display: flex;
+}
+
+.message_content{
+    line-height: 0.5em;
+}
+
+.message_container:hover {
+    background-color: #f1f1f2;
+    border-radius: 0.4em;
+}

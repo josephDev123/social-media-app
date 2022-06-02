@@ -29,8 +29,9 @@ const handleSubmitMessage = (e)=>{
       if (result.data()) {
         addDoc(DirectMessageCoillection, { 
             sentBy: authValue.email,
-            to: to,
-            content:message
+            to:to,
+            content:message,
+            date:new Date().toDateString()
           })
             .then(addMessage=>{
               setSuccess('message sent Successfully');
@@ -64,6 +65,19 @@ const handleSubmitMessage = (e)=>{
           </section>
         </form>
         <hr/>
+        <div className='mt-2 message_container p-2'>
+          <h5>Direct message for me:</h5>
+          <div className='message_wrapper mt-4'>
+              <div className='me-2'>
+                <img src='/asset/avatar/avatar.jpg' width='50' height='50' alt='sender image' className=''/>
+              </div>
+              <div className='message_content'>
+                  <p>joseph <span>{new Date().toDateString()}</span></p>
+                  <p>content is coming ...</p>
+              </div>
+          </div>
+
+        </div>
     </div>
   );
 }
