@@ -2,19 +2,22 @@ import React from 'react';
 import '../css/message.css';
 import { useState, useContext, useEffect } from 'react';
 import {context} from '../Context/context';
-import {collection, getDoc, getFirestore, doc, setDoc, addDoc} from 'firebase/firestore';
+import {collection, getDoc, getFirestore, doc, addDoc, query, onSnapshot, where} from 'firebase/firestore';
 
 export default function Message() {
+  //state management
 const [message, setMessage] = useState('');
 const [to, setTo] = useState('');
 const [isSuccess, setSuccess]= useState('');
 const [status, setStatus] = useState('')
+const [DirectMessage, setDirectMessage] = useState([]);
 
 const {authValue} = useContext(context);
 
 const db = getFirestore();
 
 const DirectMessageCoillection = collection(db, 'directMessage');
+const q = query(collection(db, "directMessage"), where("to", "==", authValue.email))
 
 
 const handleSubmitMessage = (e)=>{
@@ -23,6 +26,7 @@ const handleSubmitMessage = (e)=>{
   if (message === '' && to==='') {
     setStatus('The field cannot be empty');
   }else{
+    //check if the person to message is registered email
     const profileRef = doc(db, 'profile', to);
       getDoc(profileRef)
       .then((result)=>{
@@ -45,10 +49,20 @@ const handleSubmitMessage = (e)=>{
       })
       .catch(e=> setStatus(e.message))
   }
-
 }
 
+//get the message for the login user
+useEffect(()=>{
+  onSnapshot(q, (querySnapshot) => {
+    const message = [];
+    querySnapshot.forEach((messages) => {
+      message.push({...messages.data(), id:messages.id});
+    });
+    setDirectMessage(message);
+  });
+}, [])
 
+console.log(DirectMessage);
 
   return (
      <div className='container'>
@@ -67,15 +81,21 @@ const handleSubmitMessage = (e)=>{
         <hr/>
         <div className='mt-2 message_container p-2'>
           <h5>Direct message for me:</h5>
-          <div className='message_wrapper mt-4'>
-              <div className='me-2'>
-                <img src='/asset/avatar/avatar.jpg' width='50' height='50' alt='sender image' className=''/>
+          {!DirectMessage.length && <div class="alert alert-danger" role="alert">No message yet</div>}
+
+          {DirectMessage.map(message=>{
+            return(
+              <div className='message_wrapper mt-4' key={message.id}>
+                  <div className='me-2'>
+                    <img src='/asset/avatar/avatar.jpg' width='50' height='50' alt='sender image' className=''/>
+                  </div>
+                  <div className='message_content'>
+                      <p>joseph <span>{message.date}</span></p>
+                      <p>{message.content}</p>
+                  </div>
               </div>
-              <div className='message_content'>
-                  <p>joseph <span>{new Date().toDateString()}</span></p>
-                  <p>content is coming ...</p>
-              </div>
-          </div>
+            )
+          })}
 
         </div>
     </div>

@@ -13,13 +13,16 @@
 
 .message_wrapper{
     display: flex;
+    padding: 1rem;
 }
 
 .message_content{
-    line-height: 0.5em;
+    /* line-height: 0.5em;
+    flex: 1 1 0; */
 }
 
-.message_container:hover {
+.message_wrapper:hover {
     background-color: #f1f1f2;
     border-radius: 0.4em;
+   
 }
