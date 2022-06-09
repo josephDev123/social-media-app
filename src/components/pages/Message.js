@@ -9,7 +9,8 @@ export default function Message() {
 const [message, setMessage] = useState('');
 const [to, setTo] = useState('');
 const [isSuccess, setSuccess]= useState('');
-const [status, setStatus] = useState('')
+const [status, setStatus] = useState('');
+const [dataStatus, setDataStatus] = useState('loading')
 const [DirectMessage, setDirectMessage] = useState([]);
 
 const {authValue} = useContext(context);
@@ -56,13 +57,42 @@ useEffect(()=>{
   onSnapshot(q, (querySnapshot) => {
     const message = [];
     querySnapshot.forEach((messages) => {
-      message.push({...messages.data(), id:messages.id});
+      if(messages.exists()){
+        const {to} = messages.data();
+        const profileCollection = doc(db, 'profile', to)
+        getDoc(profileCollection).then(profile=>{
+         const {profile_url} = profile.data();
+         message.push({...messages.data(), id:messages.id, profile_img: profile_url});
+         setDataStatus('loaded')
+        })
+        
+      }else{
+        setDataStatus('empty')
+      }
+     
     });
     setDirectMessage(message);
-  });
+  }, (error)=> console.log(error.message));
 }, [])
 
 console.log(DirectMessage);
+
+console.log(dataStatus);
+
+// const getMesssage =   DirectMessage.map(message=>{
+//           return(
+//           <div className='message_wrapper mt-4' key={message.id}>
+//             <div className='me-2'>
+//               <img src={message.profile_img} width='50' height='50' alt='sender image' className='message_img'/>
+//             </div>
+//             <div className='message_content'>
+//                 <p>joseph <span>{message.date}</span></p>
+//                       <p>{message.content}</p>
+//                   </div>
+//               </div>
+//             )
+//           })
+
 
   return (
      <div className='container'>
@@ -81,21 +111,17 @@ console.log(DirectMessage);
         <hr/>
         <div className='mt-2 message_container p-2'>
           <h5>Direct message for me:</h5>
-          {!DirectMessage.length && <div class="alert alert-danger" role="alert">No message yet</div>}
-
-          {DirectMessage.map(message=>{
-            return(
-              <div className='message_wrapper mt-4' key={message.id}>
-                  <div className='me-2'>
-                    <img src='/asset/avatar/avatar.jpg' width='50' height='50' alt='sender image' className=''/>
-                  </div>
-                  <div className='message_content'>
-                      <p>joseph <span>{message.date}</span></p>
-                      <p>{message.content}</p>
-                  </div>
-              </div>
-            )
-          })}
+          {dataStatus === 'empty' && <div class="alert alert-danger" role="alert">No message yet</div>}
+          {dataStatus === 'loading' && (<div>
+            <button className="btn btn-primary" type="button" disabled>
+              <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                <span className="visually-hidden">Loading...</span>
+              </button>
+              <button className="btn btn-primary" type="button" disabled>
+                <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                Loading...
+              </button>
+          </div>)}
 
         </div>
     </div>
