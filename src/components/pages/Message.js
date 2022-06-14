@@ -1,6 +1,6 @@
 import React from 'react';
 import '../css/message.css';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useCallback } from 'react';
 import {context} from '../Context/context';
 import {collection, getDoc, getFirestore, doc, addDoc, query, onSnapshot, where} from 'firebase/firestore';
 
@@ -62,7 +62,9 @@ useEffect(()=>{
         const profileCollection = doc(db, 'profile', to)
         getDoc(profileCollection).then(profile=>{
          const {profile_url} = profile.data();
-         message.push({...messages.data(), id:messages.id, profile_img: profile_url});
+         message.push({id:messages.id, profile_img: profile_url, ...messages.data()});
+        //  setDirectMessage((prev)=> [prev, {id:messages.id, profile_img:profile_url, ...messages.data()}])
+        //  setDirectMessage([{id:messages.id, profile_img: profile_url, message:messages.data()}])
          setDataStatus('loaded')
         })
         
@@ -71,6 +73,7 @@ useEffect(()=>{
       }
      
     });
+
     setDirectMessage(message);
   }, (error)=> console.log(error.message));
 }, [])
@@ -79,19 +82,20 @@ console.log(DirectMessage);
 
 console.log(dataStatus);
 
-// const getMesssage =   DirectMessage.map(message=>{
-//           return(
-//           <div className='message_wrapper mt-4' key={message.id}>
-//             <div className='me-2'>
-//               <img src={message.profile_img} width='50' height='50' alt='sender image' className='message_img'/>
-//             </div>
-//             <div className='message_content'>
-//                 <p>joseph <span>{message.date}</span></p>
-//                       <p>{message.content}</p>
-//                   </div>
-//               </div>
-//             )
-//           })
+const getMesssage =   DirectMessage.map(message=>{
+          return(
+          <div className='message_wrapper mt-4' key={message.id}>
+            {console.log('hello')}
+            <div className='me-2'>
+              <img src={message.profile_img} width='50' height='50' alt='sender image' className='message_img'/>
+            </div>
+            <div className='message_content'>
+                <p>joseph <span>{message.date}</span></p>
+                      <p>{message.content}</p>
+                  </div>
+              </div>
+            )
+          })
 
 
   return (
@@ -111,6 +115,7 @@ console.log(dataStatus);
         <hr/>
         <div className='mt-2 message_container p-2'>
           <h5>Direct message for me:</h5>
+
           {dataStatus === 'empty' && <div class="alert alert-danger" role="alert">No message yet</div>}
           {dataStatus === 'loading' && (<div>
             <button className="btn btn-primary" type="button" disabled>
@@ -121,8 +126,9 @@ console.log(dataStatus);
                 <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                 Loading...
               </button>
-          </div>)}
+          </div>)} 
 
+         {dataStatus === 'loaded' && <>{getMesssage}</>}
         </div>
     </div>
   );
