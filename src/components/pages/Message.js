@@ -62,8 +62,8 @@ useEffect(()=>{
         const profileCollection = doc(db, 'profile', to)
         getDoc(profileCollection).then(profile=>{
          const {profile_url} = profile.data();
-         message.push({id:messages.id, profile_img: profile_url, ...messages.data()});
-        //  setDirectMessage((prev)=> [prev, {id:messages.id, profile_img:profile_url, ...messages.data()}])
+        //  message.push({id:messages.id, profile_img: profile_url, ...messages.data()});
+         setDirectMessage((prev)=> [...prev, {id:messages.id, profile_img:profile_url, message:messages.data()}])
         //  setDirectMessage([{id:messages.id, profile_img: profile_url, message:messages.data()}])
          setDataStatus('loaded')
         })
@@ -82,20 +82,24 @@ console.log(DirectMessage);
 
 console.log(dataStatus);
 
-const getMesssage =   DirectMessage.map(message=>{
-          return(
-          <div className='message_wrapper mt-4' key={message.id}>
-            {console.log('hello')}
-            <div className='me-2'>
-              <img src={message.profile_img} width='50' height='50' alt='sender image' className='message_img'/>
-            </div>
-            <div className='message_content'>
-                <p>joseph <span>{message.date}</span></p>
-                      <p>{message.content}</p>
-                  </div>
+const getMesssage = DirectMessage.map(message=>{
+    const char = message.message.to;
+    const charIndex = char.indexOf('@');
+
+      return(
+      <div className='message_wrapper mt-4' key={message.id}>
+        {console.log('hello')}
+        <div className='me-2'>
+          <img src={message.profile_img} width='50' height='50' alt='image' className='message_img'/>
+        </div>
+        <div className='message_content'>
+            <p>{message.message.to.substring(0, charIndex)} <span>{message.message.date}</span></p>
+                  <p>{message.message.content}</p>
               </div>
-            )
-          })
+          </div>
+        )
+      })
+
 
 
   return (
