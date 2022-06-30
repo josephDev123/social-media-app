@@ -47,7 +47,7 @@ useEffect(()=>{
 
     if(status === 'loading'){
       return (
-                <div className="d-flex align-items-center">
+                <div className="d-flex align-items-center mt-5" style={{ marginTop:'1rem' }}>
                   <strong>Loading...</strong>
                   <div className="spinner-border ms-auto" role="status" aria-hidden="true"></div>
               </div>
@@ -56,7 +56,7 @@ useEffect(()=>{
 
     if(status === 'empty'){
       return (
-            <div className='d-flex flex-column bookmark_wrapper mt-2 border p-2'>
+            <div className='d-flex flex-column bookmark_wrapper mt-5 border p-2' style={{ marginTop:'1rem' }}>
               No Bookmark
             </div>
              )
@@ -65,7 +65,7 @@ useEffect(()=>{
     
     if(status === 'error'){
       return (
-              <div className="alert alert-danger" role="alert border p-2">
+              <div className="alert alert-danger mt-5" role="alert border p-2" style={{ marginTop:'1rem' }}>
                    {errorType }
               </div>
                 )
@@ -73,9 +73,12 @@ useEffect(()=>{
 
   
       return (
-        <div className='d-flex flex-column bookmark_wrapper mt-2 border p-2'>
+        <div className='d-flex flex-column p-2 mt-5'>
+          <h5>Bookmark</h5>
              {bookmarks.map(item=>(
-                         <div key={item.id} className='mb-2 p-2'>
+                         
+                         <div key={item.id} className='bookmark_wrapper mb-2 p-2 border'>
+                           
                            <div className='me-3'>
                              <img src={item.bookmarks.person_who_tweeted_img?item.bookmarks.person_who_tweeted_img:'asset/avatar/avatar.jpg'} alt='profile_image' className='img-fluid rounded-circle img-thumbnail' width='50px' height='100px' />
                            </div>

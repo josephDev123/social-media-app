@@ -36,15 +36,15 @@ return ()=>{
 
   if(status === 'loading'){
     return (
-      <div className="d-flex align-items-center text-primary">
+      <div className="d-flex align-items-center mt-5 text-primary">
         <strong>Loading...</strong>
         <div className="spinner-border ms-auto" role="status" aria-hidden="true"></div>
       </div>
     )
   }
   return (
-      <div style={{ margin: '0 auto', width: '100%' }}>
-        <div className='profile_header'>
+      <div  style={{ margin: '0 auto', width: '100%' }}>
+        <div className='profile_header mt-5'>
          {/* //profile image */}
           <div className='profile_img_container'>
               <img className='img-fluid rounded-circle img-thumbnail profile_img' src={profile ?profile.profile_url:'asset/avatar/avatar.jpg'} alt='' width='100px' height='100px'/>   

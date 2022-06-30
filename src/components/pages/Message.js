@@ -88,13 +88,13 @@ const getMesssage = DirectMessage.map(message=>{
 
       return(
       <div className='message_wrapper mt-4' key={message.id}>
-        {console.log('hello')}
+        
         <div className='me-2'>
           <img src={message.profile_img} width='50' height='50' alt='image' className='message_img'/>
         </div>
         <div className='message_content'>
-            <p>{message.message.to.substring(0, charIndex)} <span>{message.message.date}</span></p>
-                  <p>{message.message.content}</p>
+            <p>{message.message.to.substring(0, charIndex)} <span style={{ fontSize: '0.7rem' }}>{message.message.date}</span></p>
+                  <p style={{ fontSize: '0.8rem' }}>{message.message.content}</p>
               </div>
           </div>
         )
@@ -103,7 +103,7 @@ const getMesssage = DirectMessage.map(message=>{
 
 
   return (
-     <div className='container'>
+     <div className='container mt-4 message_container' style={{ paddingTop:'1rem' }}>
        <form onSubmit={handleSubmitMessage}>
          {isSuccess ? <div className="alert alert-success" role="alert"> {isSuccess}</div>:''}
          {status ? <div className="alert alert-danger" role="alert"> {status}</div>:''}
@@ -120,8 +120,8 @@ const getMesssage = DirectMessage.map(message=>{
         <div className='mt-2 message_container p-2'>
           <h5>Direct message for me:</h5>
 
-          {dataStatus === 'empty' && <div class="alert alert-danger" role="alert">No message yet</div>}
-          {dataStatus === 'loading' && (<div>
+          {dataStatus === 'empty' && <div class="alert alert-danger mt-5" role="alert">No message yet</div>}
+          {dataStatus === 'loading' && (<div className='mt-5'>
             <button className="btn btn-primary" type="button" disabled>
               <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                 <span className="visually-hidden">Loading...</span>
