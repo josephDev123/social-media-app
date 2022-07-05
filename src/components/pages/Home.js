@@ -199,7 +199,7 @@ function handleFileChange(e){
 
 
   return (
-    <div className='home_container'>
+    <div className='home_container mt-5'>
         <h6 className='pb-4'>Home</h6>
 
     <form onSubmit={handleTweetSubmit}>

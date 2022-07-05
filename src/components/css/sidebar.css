@@ -6,6 +6,7 @@
 .logo{
     padding-left: 1em;
     font-size: 2em;
+    width: 5rem;
     color: var(--twitter-color);
 }
 
@@ -94,7 +95,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        position: relative;
+        /* position: relative; */
+        border: 2px solid blue;
 
     }
     

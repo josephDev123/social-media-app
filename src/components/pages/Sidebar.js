@@ -83,12 +83,14 @@ let {Logout} = useContext(context);
                     </label>
                 </CustomLink>
 
-                <CustomLink to='' className='custom_link' onClick ={handleLogoutClick}>
+                <CustomLink to='/logout' className='custom_link' onClick ={handleLogoutClick}>
                     <label className="list-group-item">
                     <i className="fas fa-sign-out-alt"></i>
                       Logout
                     </label>
                 </CustomLink>
+
+                {/* <button className='btn btn-danger btn-sm' onClick ={handleLogoutClick}>Logout</button> */}
             </div>
         </div>
 {/* 
