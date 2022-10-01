@@ -55,11 +55,13 @@
 
 .explore_link:hover{
     cursor:not-allowed;
+   
 }
 
 .explore_link{
     pointer-events: none;
     opacity: 0.5;
+    display: none;
 }
 
 .notification_link:hover{
@@ -70,6 +72,7 @@
 .notification_link{
     pointer-events: none;
     opacity: 0.5;
+    display: none;
 }
 
 
@@ -100,7 +103,7 @@
         justify-content: space-between;
         align-items: center;
         position: relative;
-        gap:0.5rem;
+        /* gap:0.5rem; */
         top:-4rem;
         /* border: 2px solid blue; */
 
