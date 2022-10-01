@@ -199,8 +199,8 @@ function handleFileChange(e){
 
 
   return (
-    <div className='home_container mt-5'>
-        <h6 className='pb-4'>Home</h6>
+    <div className='home_container mt-3'>
+        {/* <h6 className='pb-4'>Home</h6> */}
 
     <form onSubmit={handleTweetSubmit}>
           <div className="input-group form-group-sm">

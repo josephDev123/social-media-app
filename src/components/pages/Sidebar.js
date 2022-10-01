@@ -35,12 +35,12 @@ let {Logout} = useContext(context);
 
   return (
     <div className='sidebar'>
-        <div className='logo'>
-          <i className="fab fa-twitter"></i>
-        </div>
+        {/* <div className='logo'> */}
+          <i className="fab fa-twitter logo"></i>
+        {/* </div> */}
         <div ref ={ref} className='navigation'>
             <div ref ={ref2} className="list-group">
-                    
+            <i className="fab fa-twitter mobile"></i>
                 <CustomLink to='/home' className='custom_link'>
                     <label className="list-group-item">
                       <i className="fas fa-home"></i>
